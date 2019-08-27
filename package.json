@@ -27,7 +27,10 @@
     "LICENSE.md",
     "README.md"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "react-slick": "^0.25.2",
+    "react-swipeable": "^5.4.0"
+  },
   "peerDependencies": {
     "prop-types": "*"
   },
