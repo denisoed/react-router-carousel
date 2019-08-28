@@ -28,6 +28,9 @@
     "README.md"
   ],
   "dependencies": {
+    "path-to-regexp": "^3.0.0",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
     "react-slick": "^0.25.2",
     "react-swipeable": "^5.4.0"
   },
