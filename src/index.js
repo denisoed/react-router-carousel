@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { matchPath, withRouter } from "react-router";
+import AliceCarousel from 'react-alice-carousel';
 import { useSwipeable } from 'react-swipeable'
 import generatePath from "./generatePath";
-import AliceCarousel from 'react-alice-carousel';
+import "react-alice-carousel/lib/alice-carousel.css";
 
 const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
@@ -18,8 +19,9 @@ const RouterCarousel = props => {
     staticContext,
     swipeRight,
     swipeLeft,
-    match: routeMatch,
-    ...rest
+    swipeAllZones,
+    duration,
+    match: routeMatch
   } = props;
 
   const triggerOnChangeIndex = location => {
@@ -140,14 +142,14 @@ const RouterCarousel = props => {
 
   return (
     <React.Fragment>
-      {swipeLeft && routeHas && <section {...handlers} className="router-carousel-zone">Left</section>}
-      {swipeRight && routeHas && <section {...handlers} className="router-carousel-zone">Right</section>}
+      {swipeLeft && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--left"></section>}
+      {swipeRight && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--right"></section>}
       {routeHas && <AliceCarousel
         mouseDragEnabled
         ref={c => (this.slider = c)}
         onSlideChanged={handleIndexChange}
         startIndex={matchedIndex}
-        swipeDisabled={true}
+        swipeDisabled={!swipeAllZones}
         dotsDisabled={true}
         buttonsDisabled={true}
       >
