@@ -33,9 +33,11 @@ export default class App extends Component {
     return (
       <div style={{textAlign: 'center', height: '100vh'}}>
         <Router>
-          <Route path="/red" component={RedView} />
           <RouterCarousel swipeAllZones>
-            <Route path="/blue" component={BlueView} />
+            <Route path="/" component={BlueView} />
+            <Route exact path="/red" component={RedView} />
+          </RouterCarousel>
+          <RouterCarousel swipeAllZones>
             <Route path="/green" component={GreenView} />
             <Route path="/yellow" component={YellowView} />
           </RouterCarousel>

@@ -152,6 +152,7 @@ const RouterCarousel = props => {
         swipeDisabled={!swipeAllZones}
         dotsDisabled={true}
         buttonsDisabled={true}
+        infinite={false}
       >
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
