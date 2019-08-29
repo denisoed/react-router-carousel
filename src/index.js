@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { matchPath, withRouter } from "react-router";
-import AliceCarousel from 'react-alice-carousel';
 import { useSwipeable } from 'react-swipeable'
 import generatePath from "./generatePath";
-import "react-alice-carousel/lib/alice-carousel.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
 
 const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
@@ -19,7 +19,7 @@ const RouterCarousel = props => {
     staticContext,
     swipeRight,
     swipeLeft,
-    swipeAllZones,
+    swipeAll,
     duration,
     match: routeMatch
   } = props;
@@ -56,10 +56,10 @@ const RouterCarousel = props => {
   }
 
   // Trigger the location change to the route path
-  const handleIndexChange = (sliderData) => {
+  const handleIndexChange = (index) => {
     const {
       props: { path, defaultParams }
-    } = React.Children.toArray(children)[sliderData.slide];
+    } = React.Children.toArray(children)[index];
 
     let url;
     if (path.includes(":")) {
@@ -78,7 +78,7 @@ const RouterCarousel = props => {
 
     // Call the onChangeIndex if it's set
     if (typeof props.onChangeIndex === "function") {
-      props.onChangeIndex(sliderData.slide);
+      props.onChangeIndex(index);
     }
   };
 
@@ -104,7 +104,7 @@ const RouterCarousel = props => {
 
   const slideRight = (activate) => {
     if (activate) {
-      this.slider.slideNext();
+      this.slider.slickNext();
       return true;
     }
     return false;
@@ -138,21 +138,26 @@ const RouterCarousel = props => {
   // Did update
   useEffect(() => {
     changeRouteHas(renderableRoutes.some(route => route.props.path === location.pathname));
-  });  
+  });
+
+  const settings = {
+    infinite: false,
+    speed: 500,
+    swipe: swipeAll,
+    arrows: false,
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
 
   return (
     <React.Fragment>
       {swipeLeft && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--left"></section>}
       {swipeRight && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--right"></section>}
-      {routeHas && <AliceCarousel
-        mouseDragEnabled
+      {routeHas && <Slider
+        {...settings}
         ref={c => (this.slider = c)}
-        onSlideChanged={handleIndexChange}
-        startIndex={matchedIndex}
-        swipeDisabled={!swipeAllZones}
-        dotsDisabled={true}
-        buttonsDisabled={true}
-        infinite={false}
+        afterChange={handleIndexChange}
+        initialSlide={matchedIndex}
       >
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
@@ -186,7 +191,7 @@ const RouterCarousel = props => {
               : null
             : null;
         })}
-      </AliceCarousel>}
+      </Slider>}
     </React.Fragment>
   );
 };
