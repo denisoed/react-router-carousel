@@ -29,10 +29,11 @@
   ],
   "dependencies": {
     "path-to-regexp": "^3.0.0",
+    "react-alice-carousel": "^1.15.3",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-slick": "^0.25.2",
-    "react-swipeable": "^5.4.0"
+    "react-swipeable": "^5.4.0",
   },
   "peerDependencies": {
     "prop-types": "*"

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import Slider from "react-slick"
 import { matchPath, withRouter } from "react-router";
 import { useSwipeable } from 'react-swipeable'
 import generatePath from "./generatePath";
+import AliceCarousel from 'react-alice-carousel';
 
 const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
@@ -21,19 +21,6 @@ const RouterCarousel = props => {
     ...rest
   } = props;
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    swipe: false,
-    swipeToSlide: false,
-    touchMove: false,
-    draggable: false,
-    accessibility: false,
-  };
-
   const slideLeft = (activate) => {
     if (activate) {
       this.slider.slickPrev();
@@ -44,7 +31,7 @@ const RouterCarousel = props => {
   
   const slideRight = (activate) => {
     if (activate) {
-      this.slider.slickNext();
+      this.slider.slideNext();
       return true;
     }
     return false;
@@ -56,6 +43,20 @@ const RouterCarousel = props => {
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
+
+  const triggerOnChangeIndex = location => {
+    const { children } = props;
+    React.Children.forEach(children, (element, index) => {
+      const { path: pathProp, exact, strict, from } = element.props;
+      const path = pathProp || from;
+      if (matchPath(location.pathname, { path, exact, strict })) {
+        if (typeof props.onChangeIndex === "function") {
+          props.onChangeIndex(index);
+        }
+        changeUrls({ ...urls, [path]: location.pathname });
+      }
+    });
+  };
 
   // If there's no match, render the first route with no params
   let matchedIndex = 0;
@@ -74,6 +75,33 @@ const RouterCarousel = props => {
     });
   }
 
+  // Trigger the location change to the route path
+  const handleIndexChange = (meta) => {
+    const {
+      props: { path, defaultParams }
+    } = React.Children.toArray(children)[meta.slide];
+
+    let url;
+    if (path.includes(":")) {
+      if (path in urls) {
+        url = urls[path];
+      } else {
+        // Build url with defaults
+        url = generatePath(path, defaultParams);
+        changeUrls({ urls: { ...urls, [path]: url } });
+      }
+    } else {
+      url = path;
+    }
+
+    historyGoTo(url);
+
+    // Call the onChangeIndex if it's set
+    if (typeof props.onChangeIndex === "function") {
+      props.onChangeIndex(meta.slide, type);
+    }
+  };
+
   const renderableRoutes = React.Children.toArray(children).filter(
     (element, index) =>
       !element.props.path.includes(":") ||
@@ -81,11 +109,38 @@ const RouterCarousel = props => {
       element.props.path in urls
   );
 
+  const historyGoTo = path => {
+    const { replace, history } = props;
+    return replace ? history.replace(path) : history.push(path);
+  };
+
+  useEffect(() => {
+    const { history } = props;
+    triggerOnChangeIndex(history.location);
+    const unlistenHistory = history.listen(location => {
+      // When the location changes, call onChangeIndex with the route index
+      triggerOnChangeIndex(location);
+    });
+    // If index prop changed, change the location to the path of that route
+    if (props.index !== props.index) {
+      const paths = React.Children.map(
+        props.children,
+        element => element.props.path
+      );
+      historyGoTo(paths[props.index]);
+    }
+  }, []);
+
   return (
     <section>
       {swipeLeft && <section {...handlers} className="router-carousel-zone">Left</section>}
       {swipeRight && <section {...handlers} className="router-carousel-zone">Right</section>}
-      <Slider ref={c => (this.slider = c)} {...settings}>
+      <AliceCarousel
+        mouseDragEnabled
+        ref={c => (this.slider = c)}
+        onSlideChange={handleIndexChange}
+        startIndex={matchedIndex}
+      >
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
           const props = { location, history, staticContext };
@@ -106,11 +161,6 @@ const RouterCarousel = props => {
           props.match = match;
           props.key = path;
 
-          // A lot of this code is borrowed from the render method of
-          // Route. Why can't I just render the Route then?
-          // Because Route only renders the component|render|children
-          // if there's a match with the location, while here I render
-          // regardless of the location.
           return component
             ? React.createElement(component, props)
             : render
@@ -123,8 +173,8 @@ const RouterCarousel = props => {
               : null
             : null;
         })}
-      </Slider>
-      </section>
+      </AliceCarousel>
+    </section>
   );
 };
 
