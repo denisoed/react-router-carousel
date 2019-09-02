@@ -125,7 +125,13 @@ const RouterCarousel = props => {
   // Did mount
   useEffect(() => {
     const { history } = props;
-    changeRouteHas(renderableRoutes.some(route => route.props.path === location.pathname));
+    changeRouteHas(renderableRoutes.some(route => {
+      if (route.props.path.includes(":")) {
+        const paramKey = Object.keys(route.props.defaultParams)[0];
+        return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
+      }
+      return route.props.path === location.pathname;
+    }));
     triggerOnChangeIndex(history.location);
     updateLocationPath();
   }, []);
@@ -145,6 +151,14 @@ const RouterCarousel = props => {
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
           const props = { location, history, staticContext };
+
+          let match = matchPath(location.pathname, element.props);
+          match = matchPath(
+            generatePath(path, element.props.defaultParams),
+            element.props
+          );
+
+          props.match = match;
           props.key = path;
 
           return component

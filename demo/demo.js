@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import RouterCarousel from 'react-router-carousel'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const RedView = () => (
   <div style={{ height: 300, backgroundColor: "red" }}>Red</div>
@@ -28,14 +28,26 @@ export default class App extends Component {
   }
 
   render () {
-    const { } = this.state
-
+    const {} = this.state
     return (
       <div style={{textAlign: 'center', height: '100vh'}}>
         <Router>
-          <RouterCarousel swipeLeft swipeRight>
+          <Route
+            path="/other/:color"
+            component={OtherColorView}
+          />
+          <Route
+            path="/background/:color"
+            component={OtherColorView}
+          />
+          <RouterCarousel swipeLeft swipeRight swipeAll>
             <Route path="/" component={BlueView} />
             <Route exact path="/red" component={RedView} />
+            <Route
+              path="/fill/:color"
+              component={OtherColorView}
+              defaultParams={{ color: "grey" }} // important for slider
+            />
           </RouterCarousel>
           <RouterCarousel swipeAll>
             <Route path="/green" component={GreenView} />
