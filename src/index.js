@@ -38,8 +38,7 @@ const RouterCarousel = props => {
     });
   };
 
-  // Trigger the location change to the route path
-  const handleIndexChange = (index) => {
+  const createSlideUrl = (index) => {
     const {
       props: { path, defaultParams }
     } = React.Children.toArray(children)[index];
@@ -56,8 +55,13 @@ const RouterCarousel = props => {
     } else {
       url = path;
     }
-
     historyGoTo(url);
+  };
+
+  // Trigger the location change to the route path
+  const handleIndexChange = (index) => {
+    createSlideUrl(index);
+    changeSlideIndex(index);
   };
 
   const renderableRoutes = React.Children.toArray(children).filter(
@@ -74,7 +78,9 @@ const RouterCarousel = props => {
 
   const slideLeft = (activate) => {
     if (activate) {
-      this.slider.slickPrev();
+      const prevSlide = slideIndex > 0 ? slideIndex - 1 : 0;
+      changeSlideIndex(prevSlide);
+      createSlideUrl(prevSlide);
       return true;
     }
     return false;
@@ -82,29 +88,28 @@ const RouterCarousel = props => {
 
   const slideRight = (activate) => {
     if (activate) {
-      changeSlideIndex(2);
+      const numberOfSlides = renderableRoutes.length - 1;
+      const nextSlide = slideIndex < numberOfSlides ? slideIndex + 1 : numberOfSlides;
+      changeSlideIndex(nextSlide);
+      createSlideUrl(nextSlide);
       return true;
     }
     return false;
   };
 
-  const handlers = useSwipeable({
+  const handlerLeft = useSwipeable({
     onSwipedLeft: () => slideLeft(swipeLeft),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true
+  });
+
+  const handlerRight = useSwipeable({
     onSwipedRight: () => slideRight(swipeRight),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
-  // Did mount
-  useEffect(() => {
-    const { history } = props;
-    changeRouteHas(renderableRoutes.some(route => route.props.path === location.pathname));
-    triggerOnChangeIndex(history.location);
-  }, []);
-
-  // Did update
-  useEffect(() => {
-    // If there's no match, render the first route with no params
+  const updateLocationPath = () => {
     let match;
     React.Children.forEach(children, (element, index) => {
       const { path: pathProp, exact, strict, from } = element.props;
@@ -115,12 +120,23 @@ const RouterCarousel = props => {
         changeSlideIndex(index);
       }
     });
-  });
+  };
+
+  // Did mount
+  useEffect(() => {
+    const { history } = props;
+    changeRouteHas(renderableRoutes.some(route => route.props.path === location.pathname));
+    triggerOnChangeIndex(history.location);
+    updateLocationPath();
+  }, []);
+
+  useEffect(() => {
+    updateLocationPath();
+  }, [location.pathname]);
 
   return (
     <React.Fragment>
-      {swipeLeft && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--left"></section>}
-      {swipeRight && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--right">RRRRIIIIIIII</section>}
+      {swipeLeft && routeHas && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
       {routeHas && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
@@ -143,6 +159,7 @@ const RouterCarousel = props => {
             : null;
         })}
       </SwipeableViews>}
+      {swipeRight && routeHas && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
     </React.Fragment>
   );
 };
