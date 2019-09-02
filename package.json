@@ -28,17 +28,14 @@
     "README.md"
   ],
   "dependencies": {
-    "css-loader": "^3.2.0",
     "path-to-regexp": "^3.0.0",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-slick": "^0.25.2",
     "react-swipeable": "^5.4.0",
-    "slick-carousel": "^1.8.1",
-    "style-loader": "^1.0.0"
+    "react-swipeable-views": "^0.13.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

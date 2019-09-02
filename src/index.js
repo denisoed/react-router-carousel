@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { matchPath, withRouter } from "react-router";
 import { useSwipeable } from 'react-swipeable'
+import SwipeableViews from 'react-swipeable-views';
 import generatePath from "./generatePath";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 
 const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
   const [routeHas, changeRouteHas] = useState(false);
+  const [slideIndex, changeSlideIndex] = useState(0);
 
   const {
     children,
@@ -38,23 +38,6 @@ const RouterCarousel = props => {
     });
   };
 
-  // If there's no match, render the first route with no params
-  let matchedIndex = 0;
-  let match;
-  if (index) {
-    matchedIndex = index;
-  } else {
-    React.Children.forEach(children, (element, index) => {
-      const { path: pathProp, exact, strict, from } = element.props;
-      const path = pathProp || from;
-
-      match = matchPath(location.pathname, { path, exact, strict });
-      if (match) {
-        matchedIndex = index;
-      }
-    });
-  }
-
   // Trigger the location change to the route path
   const handleIndexChange = (index) => {
     const {
@@ -75,11 +58,6 @@ const RouterCarousel = props => {
     }
 
     historyGoTo(url);
-
-    // Call the onChangeIndex if it's set
-    if (typeof props.onChangeIndex === "function") {
-      props.onChangeIndex(index);
-    }
   };
 
   const renderableRoutes = React.Children.toArray(children).filter(
@@ -104,7 +82,7 @@ const RouterCarousel = props => {
 
   const slideRight = (activate) => {
     if (activate) {
-      this.slider.slickNext();
+      changeSlideIndex(2);
       return true;
     }
     return false;
@@ -120,63 +98,36 @@ const RouterCarousel = props => {
   // Did mount
   useEffect(() => {
     const { history } = props;
+    changeRouteHas(renderableRoutes.some(route => route.props.path === location.pathname));
     triggerOnChangeIndex(history.location);
-    const unlistenHistory = history.listen(location => {
-      // When the location changes, call onChangeIndex with the route index
-      triggerOnChangeIndex(location);
-    });
-    // If index prop changed, change the location to the path of that route
-    if (props.index !== props.index) {
-      const paths = React.Children.map(
-        props.children,
-        element => element.props.path
-      );
-      historyGoTo(paths[props.index]);
-    }
   }, []);
 
   // Did update
   useEffect(() => {
-    changeRouteHas(renderableRoutes.some(route => route.props.path === location.pathname));
-  });
+    // If there's no match, render the first route with no params
+    let match;
+    React.Children.forEach(children, (element, index) => {
+      const { path: pathProp, exact, strict, from } = element.props;
+      const path = pathProp || from;
 
-  const settings = {
-    infinite: false,
-    speed: 500,
-    swipe: swipeAll,
-    arrows: false,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
+      match = matchPath(location.pathname, { path, exact, strict });
+      if (match) {
+        changeSlideIndex(index);
+      }
+    });
+  });
 
   return (
     <React.Fragment>
       {swipeLeft && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--left"></section>}
-      {swipeRight && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--right"></section>}
-      {routeHas && <Slider
-        {...settings}
-        ref={c => (this.slider = c)}
-        afterChange={handleIndexChange}
-        initialSlide={matchedIndex}
+      {swipeRight && routeHas && <section {...handlers} className="router-carousel-zone router-carousel-zone--right">RRRRIIIIIIII</section>}
+      {routeHas && <SwipeableViews
+        index={slideIndex}
+        onChangeIndex={handleIndexChange}
       >
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
           const props = { location, history, staticContext };
-
-          let match = matchPath(location.pathname, element.props);
-          if (match) {
-            match.type = "full";
-          } else if (path in urls) {
-            match = matchPath(urls[path], element.props);
-            match.type = "outOfView";
-          } else {
-            match = matchPath(
-              generatePath(path, element.props.defaultParams),
-              element.props
-            );
-            match.type = "none";
-          }
-          props.match = match;
           props.key = path;
 
           return component
@@ -191,7 +142,7 @@ const RouterCarousel = props => {
               : null
             : null;
         })}
-      </Slider>}
+      </SwipeableViews>}
     </React.Fragment>
   );
 };
