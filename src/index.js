@@ -13,14 +13,12 @@ const RouterCarousel = props => {
     children,
     index,
     replace,
-    innerRef,
     location,
     history,
     staticContext,
     swipeRight,
     swipeLeft,
     swipeAll,
-    duration,
     match: routeMatch
   } = props;
 
@@ -165,13 +163,7 @@ const RouterCarousel = props => {
             ? React.createElement(component, props)
             : render
             ? render(props)
-            : children
-            ? typeof children === "function"
-              ? children(props)
-              : !Array.isArray(children) || children.length // Preact defaults to empty children array
-              ? React.Children.only(children)
-              : null
-            : null;
+            : children;
         })}
       </SwipeableViews>}
       {swipeRight && routeHas && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
