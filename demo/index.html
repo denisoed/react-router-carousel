@@ -5,6 +5,43 @@
     <meta charset="utf-8">
     <meta content='width=device-width, initial-scale=1' name='viewport'>
     <title>React Router Carousel</title>
+    <style>
+      .router-carousel-zone {
+        width: 20px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .router-carousel-zone--left {
+        left: 0;
+      }
+
+      .router-carousel-zone--right {
+        right: 0;
+      }
+
+      .menu {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 15px 0;
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .menu a {
+        color: #222;
+        text-decoration: none;
+      }
+
+      .menu .activeRoute {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

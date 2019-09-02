@@ -96,13 +96,13 @@ const RouterCarousel = props => {
   };
 
   const handlerLeft = useSwipeable({
-    onSwipedLeft: () => slideLeft(swipeLeft),
+    onSwipedRight: () => slideLeft(swipeLeft),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
   const handlerRight = useSwipeable({
-    onSwipedRight: () => slideRight(swipeRight),
+    onSwipedLeft: () => slideRight(swipeRight),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
