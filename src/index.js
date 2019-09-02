@@ -140,6 +140,7 @@ const RouterCarousel = props => {
       {routeHas && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
+        disabled={swipeAll ? false : true}
       >
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
