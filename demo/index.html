@@ -7,11 +7,12 @@
     <title>React Router Carousel</title>
     <style>
       .router-carousel-zone {
-        width: 20px;
+        width: 50px;
         height: 100%;
         position: absolute;
         top: 0;
-        background-color: rgba(0, 0, 0, 0.1);
+        background-color: rgba(0, 0, 0, 0.05);
+        z-index: 10;
       }
 
       .router-carousel-zone--left {
@@ -30,6 +31,7 @@
         padding: 15px 0;
         display: flex;
         justify-content: space-around;
+        z-index: 100;
       }
 
       .menu a {

@@ -16,9 +16,16 @@ const About = () => (
   </div>
 );
 const Contact = () => (
-  <div style={{ width: '100%', height: 540 }}>
+  <div style={{ width: '100%', height: 540, position: 'relative' }}>
     <h1>Contact page</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <section style={{ width: '70%', height: 70, position: 'relative', margin: '0 auto' }}>
+      <RouterCarousel swipeLeft swipeRight sliderMode index={3}>
+        <h2>EMail</h2>
+        <h2>Phone number</h2>
+        <h2>Address</h2>
+      </RouterCarousel>
+    </section>
   </div>
 );
 const Profile = () => (
@@ -65,17 +72,11 @@ export default class App extends Component {
       }>
         <Router>
           <Route path="/about/:id" component={AboutPages} />
-          {/* <RouterCarousel swipeLeft swipeRight swipeAll>
+          <RouterCarousel swipeLeft swipeRight index={3}>
             <Route path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/profile" component={Profile} />
-          </RouterCarousel> */}
-          <RouterCarousel swipeLeft swipeRight swipeAll sliderMode>
-            <h1>1111111111111111</h1>
-            <h1>2222222222222222</h1>
-            <h1>3333333333333333</h1>
-            <h1>4444444444444444</h1>
           </RouterCarousel>
           {/* <RouterCarousel swipeLeft swipeRight>
             <Route

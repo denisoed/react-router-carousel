@@ -6,8 +6,8 @@ import generatePath from "./generatePath";
 
 const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
-  const [routeHas, changeRouteHas] = useState(false);
   const [slideIndex, changeSlideIndex] = useState(0);
+  const [routeHas, changeRouteHas] = useState([]);
 
   const {
     children,
@@ -25,24 +25,33 @@ const RouterCarousel = props => {
 
   let renderableRoutes = null;
 
+  if (!sliderMode) {
+    renderableRoutes = React.Children.toArray(children).filter(
+      (element) =>
+      !element.props.path.includes(":") ||
+      Boolean(element.props.defaultParams) ||
+      element.props.path in urls
+    );
+  };
+
   const triggerOnChangeIndex = location => {
     const { children } = props;
-    React.Children.forEach(children, (element, index) => {
+    React.Children.forEach(children, (element, i) => {
       const { path: pathProp, exact, strict, from } = element.props;
       const path = pathProp || from;
       if (matchPath(location.pathname, { path, exact, strict })) {
         if (typeof props.onChangeIndex === "function") {
-          props.onChangeIndex(index);
+          props.onChangeIndex(i);
         }
         changeUrls({ ...urls, [path]: location.pathname });
       }
     });
   };
 
-  const createSlideUrl = (index) => {
+  const createSlideUrl = (i) => {
     const {
       props: { path, defaultParams }
-    } = React.Children.toArray(children)[index];
+    } = React.Children.toArray(children)[i];
 
     let url;
     if (path.includes(":")) {
@@ -60,21 +69,12 @@ const RouterCarousel = props => {
   };
 
   // Trigger the location change to the route path
-  const handleIndexChange = (index) => {
+  const handleIndexChange = (i) => {
     if (!sliderMode) {
-      createSlideUrl(index);      
+      createSlideUrl(i);      
     }
-    changeSlideIndex(index);
+    changeSlideIndex(i);
   };
-
-  if (!sliderMode) {
-    renderableRoutes = React.Children.toArray(children).filter(
-      (element, index) =>
-        !element.props.path.includes(":") ||
-        Boolean(element.props.defaultParams) ||
-        element.props.path in urls
-    );    
-  }
 
   const historyGoTo = path => {
     const { replace, history } = props;
@@ -120,13 +120,13 @@ const RouterCarousel = props => {
 
   const updateLocationPath = () => {
     let match;
-    React.Children.forEach(children, (element, index) => {
+    React.Children.forEach(children, (element, i) => {
       const { path: pathProp, exact, strict, from } = element.props;
       const path = pathProp || from;
 
       match = matchPath(location.pathname, { path, exact, strict });
       if (match) {
-        changeSlideIndex(index);
+        changeSlideIndex(i);
       }
     });
   };
@@ -135,13 +135,6 @@ const RouterCarousel = props => {
   useEffect(() => {
     if (!sliderMode) {
       const { history } = props;
-      changeRouteHas(renderableRoutes.some(route => {
-        if (route.props.path.includes(":")) {
-          const paramKey = Object.keys(route.props.defaultParams)[0];
-          return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
-        }
-        return route.props.path === location.pathname;
-      }));
       triggerOnChangeIndex(history.location);
       updateLocationPath();
     }
@@ -153,15 +146,36 @@ const RouterCarousel = props => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (!sliderMode) {
+      changeRouteHas(renderableRoutes.some(route => {
+        if (route.props.path.includes(":")) {
+          const paramKey = Object.keys(route.props.defaultParams)[0];
+          return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
+        }
+        return route.props.path === location.pathname;
+      }));
+    }
+    if (index) {
+      const mode = !sliderMode ? renderableRoutes : children;
+      const max = index >= mode.length ? mode.length : index;
+      const result = max >= 1 ? max - 1 : 1;
+      changeSlideIndex(result);
+      if (!sliderMode) {
+        createSlideUrl(result);
+      }
+    }
+  }, [routeHas, index]);
+
   return (
     <React.Fragment>
-      {swipeLeft && !sliderMode ? routeHas : true && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
+      {swipeLeft && routeHas && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
       {routeHas && !sliderMode && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
         disabled={swipeAll ? false : true}
       >
-        {renderableRoutes.map((element, index) => {
+        {renderableRoutes.map((element) => {
           const { path, component, render, children } = element.props;
           const props = { location, history, staticContext };
 
@@ -188,7 +202,7 @@ const RouterCarousel = props => {
       >
         {children}
       </SwipeableViews>}
-      {swipeRight && !sliderMode ? routeHas : true && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
+      {swipeRight && routeHas && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
     </React.Fragment>
   );
 };
