@@ -19,8 +19,11 @@ const RouterCarousel = props => {
     swipeRight,
     swipeLeft,
     swipeAll,
+    sliderMode,
     match: routeMatch
   } = props;
+
+  let renderableRoutes = null;
 
   const triggerOnChangeIndex = location => {
     const { children } = props;
@@ -58,16 +61,20 @@ const RouterCarousel = props => {
 
   // Trigger the location change to the route path
   const handleIndexChange = (index) => {
-    createSlideUrl(index);
+    if (!sliderMode) {
+      createSlideUrl(index);      
+    }
     changeSlideIndex(index);
   };
 
-  const renderableRoutes = React.Children.toArray(children).filter(
-    (element, index) =>
-      !element.props.path.includes(":") ||
-      Boolean(element.props.defaultParams) ||
-      element.props.path in urls
-  );
+  if (!sliderMode) {
+    renderableRoutes = React.Children.toArray(children).filter(
+      (element, index) =>
+        !element.props.path.includes(":") ||
+        Boolean(element.props.defaultParams) ||
+        element.props.path in urls
+    );    
+  }
 
   const historyGoTo = path => {
     const { replace, history } = props;
@@ -78,7 +85,9 @@ const RouterCarousel = props => {
     if (activate) {
       const prevSlide = slideIndex > 0 ? slideIndex - 1 : 0;
       changeSlideIndex(prevSlide);
-      createSlideUrl(prevSlide);
+      if (!sliderMode) {
+        createSlideUrl(prevSlide);
+      }
       return true;
     }
     return false;
@@ -86,10 +95,12 @@ const RouterCarousel = props => {
 
   const slideRight = (activate) => {
     if (activate) {
-      const numberOfSlides = renderableRoutes.length - 1;
+      const numberOfSlides = !sliderMode ? renderableRoutes.length - 1 : children.length - 1;
       const nextSlide = slideIndex < numberOfSlides ? slideIndex + 1 : numberOfSlides;
       changeSlideIndex(nextSlide);
-      createSlideUrl(nextSlide);
+      if (!sliderMode) {
+        createSlideUrl(nextSlide);
+      }
       return true;
     }
     return false;
@@ -122,26 +133,30 @@ const RouterCarousel = props => {
 
   // Did mount
   useEffect(() => {
-    const { history } = props;
-    changeRouteHas(renderableRoutes.some(route => {
-      if (route.props.path.includes(":")) {
-        const paramKey = Object.keys(route.props.defaultParams)[0];
-        return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
-      }
-      return route.props.path === location.pathname;
-    }));
-    triggerOnChangeIndex(history.location);
-    updateLocationPath();
+    if (!sliderMode) {
+      const { history } = props;
+      changeRouteHas(renderableRoutes.some(route => {
+        if (route.props.path.includes(":")) {
+          const paramKey = Object.keys(route.props.defaultParams)[0];
+          return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
+        }
+        return route.props.path === location.pathname;
+      }));
+      triggerOnChangeIndex(history.location);
+      updateLocationPath();
+    }
   }, []);
 
   useEffect(() => {
-    updateLocationPath();
+    if (!sliderMode) {
+      updateLocationPath();
+    }
   }, [location.pathname]);
 
   return (
     <React.Fragment>
-      {swipeLeft && routeHas && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
-      {routeHas && <SwipeableViews
+      {swipeLeft && !sliderMode ? routeHas : true && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
+      {routeHas && !sliderMode && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
         disabled={swipeAll ? false : true}
@@ -166,7 +181,14 @@ const RouterCarousel = props => {
             : children;
         })}
       </SwipeableViews>}
-      {swipeRight && routeHas && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
+      {sliderMode && <SwipeableViews
+        index={slideIndex}
+        onChangeIndex={handleIndexChange}
+        disabled={swipeAll ? false : true}
+      >
+        {children}
+      </SwipeableViews>}
+      {swipeRight && !sliderMode ? routeHas : true && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
     </React.Fragment>
   );
 };

@@ -65,19 +65,25 @@ export default class App extends Component {
       }>
         <Router>
           <Route path="/about/:id" component={AboutPages} />
-          <RouterCarousel swipeLeft swipeRight>
+          {/* <RouterCarousel swipeLeft swipeRight swipeAll>
             <Route path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
             <Route path="/profile" component={Profile} />
+          </RouterCarousel> */}
+          <RouterCarousel swipeLeft swipeRight swipeAll sliderMode>
+            <h1>1111111111111111</h1>
+            <h1>2222222222222222</h1>
+            <h1>3333333333333333</h1>
+            <h1>4444444444444444</h1>
           </RouterCarousel>
-          <RouterCarousel swipeLeft swipeRight>
+          {/* <RouterCarousel swipeLeft swipeRight>
             <Route
               path="/profile/:id"
               render={(props) => <ProfilePages {...props} title={'Update Profile'} text={"GO update profile"} />}
               defaultParams={{ id: 0 }} // important for slider
             /> 
-          </RouterCarousel>
+          </RouterCarousel> */}
           <div className="menu">
             <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>
             <NavLink to="/about" activeClassName="activeRoute">About</NavLink>
