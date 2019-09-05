@@ -13,6 +13,7 @@ const About = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>About page</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <NavLink to="/map" activeClassName="activeRoute">Map</NavLink>
   </div>
 );
 const Contact = () => (
@@ -31,6 +32,12 @@ const Contact = () => (
 const Profile = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Profile page</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  </div>
+);
+const Map = () => (
+  <div style={{ width: '100%', height: 540 }}>
+    <h1>Map page</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
   </div>
 );
@@ -71,8 +78,8 @@ export default class App extends Component {
         }
       }>
         <Router>
-          <Route path="/about/:id" component={AboutPages} />
-          <RouterCarousel swipeLeft swipeRight index={3}>
+          <Route path="/map" component={Map} />
+          <RouterCarousel swipeLeft swipeRight index={2}>
             <Route path="/" component={Home} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />

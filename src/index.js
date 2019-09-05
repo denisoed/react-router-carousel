@@ -7,7 +7,7 @@ import generatePath from "./generatePath";
 const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
   const [slideIndex, changeSlideIndex] = useState(0);
-  const [routeHas, changeRouteHas] = useState([]);
+  const [routeHas, changeRouteHas] = useState(false);
 
   const {
     children,
@@ -143,11 +143,8 @@ const RouterCarousel = props => {
   useEffect(() => {
     if (!sliderMode) {
       updateLocationPath();
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (!sliderMode) {
+      console.log('!!!!!!!!!');
+      
       changeRouteHas(renderableRoutes.some(route => {
         if (route.props.path.includes(":")) {
           const paramKey = Object.keys(route.props.defaultParams)[0];
@@ -156,21 +153,24 @@ const RouterCarousel = props => {
         return route.props.path === location.pathname;
       }));
     }
+  }, [location.pathname]);
+
+  useEffect(() => {
     if (index) {
       const mode = !sliderMode ? renderableRoutes : children;
       const max = index >= mode.length ? mode.length : index;
       const result = max >= 1 ? max - 1 : 1;
       changeSlideIndex(result);
-      if (!sliderMode) {
+      if (!sliderMode && routeHas) {
         createSlideUrl(result);
       }
     }
-  }, [routeHas, index]);
+  }, [index]);
 
   return (
     <React.Fragment>
       {swipeLeft && routeHas && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
-      {routeHas && !sliderMode && <SwipeableViews
+      {routeHas && !sliderMode && routeHas && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
         disabled={swipeAll ? false : true}
