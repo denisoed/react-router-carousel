@@ -153,22 +153,20 @@ const RouterCarousel = props => {
     }
   }, [location.pathname]);
 
-  // useEffect(() => {
-  //   if (index) {
-  //     const mode = !sliderMode ? renderableRoutes : children;
-  //     const max = index >= mode.length ? mode.length : index;
-  //     const result = max >= 1 ? max - 1 : 1;
-  //     changeSlideIndex(result);
-  //     if (!sliderMode && routeHas) {
-  //       createSlideUrl(result);
-  //     }
-  //   }
-  // }, [index]);
+  useEffect(() => {
+    if (index && sliderMode) {
+      const mode = !sliderMode ? renderableRoutes : children;
+      const max = index >= mode.length ? mode.length : index;
+      const result = max >= 1 ? max - 1 : 1;
+      changeSlideIndex(result);
+    }
+  }, [index]);
 
   return (
     <React.Fragment>
+      {sliderMode && swipeLeft && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
       {swipeLeft && routeHas && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
-      {routeHas && !sliderMode && routeHas && <SwipeableViews
+      {!sliderMode && routeHas && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
         disabled={swipeAll ? false : true}
@@ -201,6 +199,7 @@ const RouterCarousel = props => {
         {children}
       </SwipeableViews>}
       {swipeRight && routeHas && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
+      {sliderMode && swipeRight && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
     </React.Fragment>
   );
 };

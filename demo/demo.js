@@ -21,7 +21,7 @@ const Contact = () => (
     <h1>Contact page</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     <section style={{ width: '70%', height: 70, position: 'relative', margin: '0 auto' }}>
-      <RouterCarousel swipeLeft swipeRight sliderMode>
+      <RouterCarousel swipeLeft swipeRight sliderMode index="2">
         <h2>EMail</h2>
         <h2>Phone number</h2>
         <h2>Address</h2>
