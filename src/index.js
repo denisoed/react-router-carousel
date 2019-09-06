@@ -143,8 +143,6 @@ const RouterCarousel = props => {
   useEffect(() => {
     if (!sliderMode) {
       updateLocationPath();
-      console.log('!!!!!!!!!');
-      
       changeRouteHas(renderableRoutes.some(route => {
         if (route.props.path.includes(":")) {
           const paramKey = Object.keys(route.props.defaultParams)[0];
@@ -155,17 +153,17 @@ const RouterCarousel = props => {
     }
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (index) {
-      const mode = !sliderMode ? renderableRoutes : children;
-      const max = index >= mode.length ? mode.length : index;
-      const result = max >= 1 ? max - 1 : 1;
-      changeSlideIndex(result);
-      if (!sliderMode && routeHas) {
-        createSlideUrl(result);
-      }
-    }
-  }, [index]);
+  // useEffect(() => {
+  //   if (index) {
+  //     const mode = !sliderMode ? renderableRoutes : children;
+  //     const max = index >= mode.length ? mode.length : index;
+  //     const result = max >= 1 ? max - 1 : 1;
+  //     changeSlideIndex(result);
+  //     if (!sliderMode && routeHas) {
+  //       createSlideUrl(result);
+  //     }
+  //   }
+  // }, [index]);
 
   return (
     <React.Fragment>
