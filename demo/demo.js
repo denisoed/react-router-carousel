@@ -79,10 +79,10 @@ export default class App extends Component {
       }>
         <Router>
           <Route path="/map" component={Map} />
-          <RouterCarousel swipeLeft swipeRight>
+          <RouterCarousel>
             <Route path="/" component={Home} />
             <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} />
+            <Route path="/contact" component={Contact} swipeLeft swipeRight />
             <Route path="/profile" component={Profile} />
           </RouterCarousel>
           {/* <RouterCarousel swipeLeft swipeRight>

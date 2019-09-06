@@ -8,6 +8,9 @@ const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
   const [slideIndex, changeSlideIndex] = useState(0);
   const [routeHas, changeRouteHas] = useState(false);
+  const [swipeLeft, toggleSwipeLeft] = useState(false);
+  const [swipeRight, toggleSwipeRight] = useState(false);
+  const [swipeAll, toggleSwipeAll] = useState(false);
 
   const {
     children,
@@ -16,9 +19,6 @@ const RouterCarousel = props => {
     location,
     history,
     staticContext,
-    swipeRight,
-    swipeLeft,
-    swipeAll,
     sliderMode,
     match: routeMatch
   } = props;
@@ -162,6 +162,24 @@ const RouterCarousel = props => {
     }
   }, [index]);
 
+  useEffect(() => {
+    if (renderableRoutes && renderableRoutes[slideIndex].props.swipeLeft) {
+      toggleSwipeLeft(true);
+    } else {
+      toggleSwipeLeft(false);
+    }
+    if (renderableRoutes && renderableRoutes[slideIndex].props.swipeRight) {
+      toggleSwipeRight(true);
+    } else {
+      toggleSwipeRight(false);
+    }
+    if (renderableRoutes && renderableRoutes[slideIndex].props.swipeRight || renderableRoutes && renderableRoutes[slideIndex].props.swipeLeft) {
+      toggleSwipeAll(true);
+    } else {
+      toggleSwipeAll(false);
+    }
+  });
+
   return (
     <React.Fragment>
       {sliderMode && swipeLeft && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
@@ -169,7 +187,7 @@ const RouterCarousel = props => {
       {!sliderMode && routeHas && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
-        disabled={swipeAll ? false : true}
+        disabled={swipeAll}
       >
         {renderableRoutes.map((element) => {
           const { path, component, render, children } = element.props;
