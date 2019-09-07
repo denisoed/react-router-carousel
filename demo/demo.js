@@ -23,7 +23,7 @@ const Contact = () => (
     <section style={{ width: '70%', height: 70, position: 'relative', margin: '0 auto' }}>
       <RouterCarousel
         sliderMode
-        index="2"
+        index="1"
         swipeLeftClassName={"router-carousel-zone router-carousel-zone--left"}
         swipeRightClassName={"router-carousel-zone router-carousel-zone--right"}
       >
@@ -68,46 +68,49 @@ export default class App extends Component {
   render () {
     const {} = this.state
     return (
-      <div style = {
-        {
-          textAlign: 'center',
-          width: '100%',
-          height: 540,
-          borderRadius: 10,
-          border: '1px solid #222',
-          padding: 20,
-          boxSizing: "border-box",
-          margin: "0 auto",
-          position: 'relative',
-          overflow: 'hidden'
-        }
-      }>
-        <Router>
-          <Route path="/map" component={Map} />
-          <RouterCarousel
-            swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
-            swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-          >
-            <Route path="/" component={Home} />
-            <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} swipeleft swiperight />
-            <Route path="/profile" component={Profile} />
-          </RouterCarousel>
-          {/* <RouterCarousel swipeLeft swipeRight>
-            <Route
-              path="/profile/:id"
-              render={(props) => <ProfilePages {...props} title={'Update Profile'} text={"GO update profile"} />}
-              defaultParams={{ id: 0 }} // important for slider
-            /> 
-          </RouterCarousel> */}
-          <div className="menu">
-            <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>
-            <NavLink to="/about" activeClassName="activeRoute">About</NavLink>
-            <NavLink to="/contact" activeClassName="activeRoute">Contact</NavLink>
-            <NavLink to="/profile" activeClassName="activeRoute">Profile</NavLink>
-          </div>
-        </Router>
-      </div>
+      <React.Fragment>
+        <h1>React Router Carousel</h1>
+        <div style={
+          {
+            textAlign: 'center',
+            width: '98%',
+            height: 540,
+            borderRadius: 10,
+            border: '1px solid #222',
+            padding: 20,
+            boxSizing: "border-box",
+            margin: "0 auto",
+            position: 'relative',
+            overflow: 'hidden'
+          }
+        }>
+          <Router>
+            <Route path="/map" component={Map} />
+            <RouterCarousel
+              swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
+              swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+            >
+              <Route path="/" component={Home} />
+              <Route path="/about" component={About} />
+              <Route path="/contact" component={Contact} swipeleft swiperight />
+              <Route path="/profile" component={Profile} />
+            </RouterCarousel>
+            {/* <RouterCarousel swipeLeft swipeRight>
+              <Route
+                path="/profile/:id"
+                render={(props) => <ProfilePages {...props} title={'Update Profile'} text={"GO update profile"} />}
+                defaultParams={{ id: 0 }} // important for slider
+              /> 
+            </RouterCarousel> */}
+            <div className="menu">
+              <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>
+              <NavLink to="/about" activeClassName="activeRoute">About</NavLink>
+              <NavLink to="/contact" activeClassName="activeRoute">Contact</NavLink>
+              <NavLink to="/profile" activeClassName="activeRoute">Profile</NavLink>
+            </div>
+          </Router>
+        </div>
+      </React.Fragment>
     )
   }
 }
