@@ -8,18 +8,18 @@ const RouterCarousel = props => {
   const [urls, changeUrls] = useState([]);
   const [slideIndex, changeSlideIndex] = useState(0);
   const [routeHas, changeRouteHas] = useState(false);
-  const [swipeLeft, toggleSwipeLeft] = useState(false);
-  const [swipeRight, toggleSwipeRight] = useState(false);
-  const [swipeAll, toggleSwipeAll] = useState(false);
+  const [swipeleft, toggleSwipeLeft] = useState(false);
+  const [swiperight, toggleSwipeRight] = useState(false);
+  const [swipeall, toggleSwipeAll] = useState(false);
 
   const {
     children,
     index,
-    replace,
     location,
     history,
-    staticContext,
     sliderMode,
+    swipeLeftClassName,
+    swipeRightClassName,
     match: routeMatch
   } = props;
 
@@ -40,9 +40,6 @@ const RouterCarousel = props => {
       const { path: pathProp, exact, strict, from } = element.props;
       const path = pathProp || from;
       if (matchPath(location.pathname, { path, exact, strict })) {
-        if (typeof props.onChangeIndex === "function") {
-          props.onChangeIndex(i);
-        }
         changeUrls({ ...urls, [path]: location.pathname });
       }
     });
@@ -107,13 +104,13 @@ const RouterCarousel = props => {
   };
 
   const handlerLeft = useSwipeable({
-    onSwipedRight: () => slideLeft(swipeLeft),
+    onSwipedRight: () => slideLeft(swipeleft),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
   const handlerRight = useSwipeable({
-    onSwipedLeft: () => slideRight(swipeRight),
+    onSwipedLeft: () => slideRight(swiperight),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
@@ -130,6 +127,33 @@ const RouterCarousel = props => {
       }
     });
   };
+
+  const checkerSwipeOnSlide = () => {
+    const mode = !sliderMode ? renderableRoutes : children;
+    if (mode && mode[slideIndex].props.swipeleft) {
+      toggleSwipeLeft(true);
+    } else {
+      toggleSwipeLeft(false);
+    }
+    if (mode && mode[slideIndex].props.swiperight) {
+      toggleSwipeRight(true);
+    } else {
+      toggleSwipeRight(false);
+    }
+    if (mode && mode[slideIndex].props.swiperight || mode && mode[slideIndex].props.swipeleft) {
+      toggleSwipeAll(true);
+    } else {
+      toggleSwipeAll(false);
+    }
+  };
+
+  const swipeLeftButton = (
+    <section {...handlerLeft} className={swipeLeftClassName} />
+  );
+
+  const swipeRightButton = (
+    <section {...handlerRight} className={swipeRightClassName} />
+  );
 
   // Did mount
   useEffect(() => {
@@ -162,36 +186,23 @@ const RouterCarousel = props => {
     }
   }, [index]);
 
+  // Did update
   useEffect(() => {
-    if (renderableRoutes && renderableRoutes[slideIndex].props.swipeLeft) {
-      toggleSwipeLeft(true);
-    } else {
-      toggleSwipeLeft(false);
-    }
-    if (renderableRoutes && renderableRoutes[slideIndex].props.swipeRight) {
-      toggleSwipeRight(true);
-    } else {
-      toggleSwipeRight(false);
-    }
-    if (renderableRoutes && renderableRoutes[slideIndex].props.swipeRight || renderableRoutes && renderableRoutes[slideIndex].props.swipeLeft) {
-      toggleSwipeAll(true);
-    } else {
-      toggleSwipeAll(false);
-    }
+    checkerSwipeOnSlide();
   });
 
   return (
     <React.Fragment>
-      {sliderMode && swipeLeft && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
-      {swipeLeft && routeHas && <section {...handlerLeft} className="router-carousel-zone router-carousel-zone--left"></section>}
+      {sliderMode && swipeleft && swipeLeftButton}
+      {swipeleft && routeHas && swipeLeftButton}
       {!sliderMode && routeHas && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
-        disabled={swipeAll}
+        disabled={swipeall}
       >
         {renderableRoutes.map((element) => {
           const { path, component, render, children } = element.props;
-          const props = { location, history, staticContext };
+          const props = { location, history };
 
           let match = matchPath(location.pathname, element.props);
           match = matchPath(
@@ -212,12 +223,12 @@ const RouterCarousel = props => {
       {sliderMode && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
-        disabled={swipeAll ? false : true}
+        disabled={swipeall}
       >
         {children}
       </SwipeableViews>}
-      {swipeRight && routeHas && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
-      {sliderMode && swipeRight && <section {...handlerRight} className="router-carousel-zone router-carousel-zone--right"></section>}
+      {swiperight && routeHas && swipeRightButton}
+      {sliderMode && swiperight && swipeRightButton}
     </React.Fragment>
   );
 };

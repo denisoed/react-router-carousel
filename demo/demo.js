@@ -21,8 +21,13 @@ const Contact = () => (
     <h1>Contact page</h1>
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     <section style={{ width: '70%', height: 70, position: 'relative', margin: '0 auto' }}>
-      <RouterCarousel swipeLeft swipeRight sliderMode index="2">
-        <h2>EMail</h2>
+      <RouterCarousel
+        sliderMode
+        index="2"
+        swipeLeftClassName={"router-carousel-zone router-carousel-zone--left"}
+        swipeRightClassName={"router-carousel-zone router-carousel-zone--right"}
+      >
+        <h2 swipeleft="false" swiperight="true">EMail</h2>
         <h2>Phone number</h2>
         <h2>Address</h2>
       </RouterCarousel>
@@ -79,10 +84,13 @@ export default class App extends Component {
       }>
         <Router>
           <Route path="/map" component={Map} />
-          <RouterCarousel>
+          <RouterCarousel
+            swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
+            swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+          >
             <Route path="/" component={Home} />
             <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} swipeLeft swipeRight />
+            <Route path="/contact" component={Contact} swipeleft swiperight />
             <Route path="/profile" component={Profile} />
           </RouterCarousel>
           {/* <RouterCarousel swipeLeft swipeRight>
