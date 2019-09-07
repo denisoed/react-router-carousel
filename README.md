@@ -1,15 +1,15 @@
-# React Router Carousel(alpha@0.0.4)
+# React Router Carousel(alpha@0.0.6)
 
 [![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
 &nbsp;
 
-### Installation
+## Installation
 
 ```bash
 npm install --save react-router-carousel
 ```
 
-### Example
+## Example
 
 ```js
 import React, { Component } from 'react';
@@ -91,7 +91,7 @@ export default class App extends Component {
 
 > Example can be found in the demo/demo.js file
 
-### Props for wrapp carousel
+## Props for wrapp carousel
 
 |    Property    | Type |          Description          | Default |
 | -------------  | ---- |          -----------          | ------- |
@@ -99,7 +99,7 @@ export default class App extends Component {
 | swipeLeftClassName  | string | Custom className for swipe left zone | null |
 | swipeRightClassName  | string | Custom className for swipe right zone | null |
 
-### Props for slide
+## Props for slide
 
 |    Property    | Type |          Description          | Default |
 | -------------  | ---- |          -----------          | ------- |
