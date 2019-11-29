@@ -1,4 +1,4 @@
-# React Router Carousel(alpha@0.0.6)
+# React Router Carousel(alpha@0.0.7)
 
 [![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
 &nbsp;
@@ -104,5 +104,5 @@ export default class App extends Component {
 |    Property    | Type |          Description          | Default |
 | -------------  | ---- |          -----------          | ------- |
 | index  | number | Set active slider. Work only props `sliderMode` | 1 |
-| swipeleft  | bool | Enable swipe left zone. If uses with props `sliderMode` add `true` or `false` > `swipeleft="true"` | false |
-| swiperight  | bool | Enable swipe right zone. If uses with props `sliderMode` add `true` or `false` > `swiperight="true"` | false |
+| swipeleft  | bool | Enable swipe left zone. If uses with props `sliderMode` add `true` or `false` - `swipeleft="true"` | false |
+| swiperight  | bool | Enable swipe right zone. If uses with props `sliderMode` add `true` or `false` - `swiperight="true"` | false |

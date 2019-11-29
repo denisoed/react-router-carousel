@@ -23,14 +23,8 @@ const RouterCarousel = props => {
     match: routeMatch
   } = props;
 
-  const Home = () => (
-    <section style={{ width: '100%', height: 540 }}>
-      <h1>Home page</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </section>
-  );
-
-  let renderableRoutes = [<Home />, <Home />, <Home />, <Home />];
+  const nullElement = <React.Fragment><div></div></React.Fragment>
+  let renderableRoutes = [nullElement, nullElement, nullElement, nullElement];
 
   if (!sliderMode) {
     const slide = React.Children.toArray(children).find(
