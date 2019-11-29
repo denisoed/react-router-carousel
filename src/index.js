@@ -23,15 +23,20 @@ const RouterCarousel = props => {
     match: routeMatch
   } = props;
 
-  let renderableRoutes = null;
+  const Home = () => (
+    <section style={{ width: '100%', height: 540 }}>
+      <h1>Home page</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </section>
+  );
+
+  let renderableRoutes = [<Home />, <Home />, <Home />, <Home />];
 
   if (!sliderMode) {
-    renderableRoutes = React.Children.toArray(children).filter(
-      (element) =>
-      !element.props.path.includes(":") ||
-      Boolean(element.props.defaultParams) ||
-      element.props.path in urls
+    const slide = React.Children.toArray(children).find(
+      (element) => element && element.props && element.props.path === location.pathname
     );
+    renderableRoutes[slideIndex] = slide;
   };
 
   const triggerOnChangeIndex = location => {
@@ -68,7 +73,7 @@ const RouterCarousel = props => {
   // Trigger the location change to the route path
   const handleIndexChange = (i) => {
     if (!sliderMode) {
-      createSlideUrl(i);      
+      createSlideUrl(i);    
     }
     changeSlideIndex(i);
   };
@@ -168,7 +173,7 @@ const RouterCarousel = props => {
     if (!sliderMode) {
       updateLocationPath();
       changeRouteHas(renderableRoutes.some(route => {
-        if (route.props.path.includes(":")) {
+        if (route.props.path && route.props.path.includes(":")) {
           const paramKey = Object.keys(route.props.defaultParams)[0];
           return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
         }

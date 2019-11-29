@@ -34,12 +34,16 @@ const Contact = () => (
     </section>
   </div>
 );
-const Profile = () => (
-  <div style={{ width: '100%', height: 540 }}>
-    <h1>Profile page</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-  </div>
-);
+const Profile = () => {
+  console.log('PROFILE !!!!!!!!!!!!!');
+  
+  return (
+    <div style={{ width: '100%', height: 540 }}>
+      <h1>Profile page</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+  )
+};
 const Map = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Map page</h1>
