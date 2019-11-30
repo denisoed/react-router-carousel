@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import RouterCarousel from 'react-router-carousel'
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import AuthHoc from './AuthHoc';
 
 // Components
 const Home = () => (
@@ -35,8 +36,6 @@ const Contact = () => (
   </div>
 );
 const Profile = () => {
-  console.log('PROFILE !!!!!!!!!!!!!');
-  
   return (
     <div style={{ width: '100%', height: 540 }}>
       <h1>Profile page</h1>
@@ -50,15 +49,11 @@ const Map = () => (
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
   </div>
 );
-const AboutPages = ({ match }) => (
+const Login = ({ match }) => (
   <div style={{ width: '100%', height: 540 }}>
-    <h1>About page: {match.params.id}</h1>
-  </div>
-);
-const ProfilePages = ({match, title, text}) => (
-  <div style={{ width: '100%', height: 540 }}>
-    <h1>{title}: {match.params.id}</h1>
-    <p>{text}</p>
+    <h1>Login page</h1>
+    <h3>React Hoc is works!</h3>
+    <p>If the user is not authorized, it will be transferred to the authorization page</p>
   </div>
 );
 
@@ -90,6 +85,7 @@ export default class App extends Component {
         }>
           <Router>
             <Route path="/map" component={Map} />
+            <Route path="/login" component={Login} />
             <RouterCarousel
               swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
               swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
@@ -97,15 +93,15 @@ export default class App extends Component {
               <Route path="/" component={Home} />
               <Route path="/about" component={About} />
               <Route path="/contact" component={Contact} swipeleft swiperight />
-              <Route path="/profile" component={Profile} />
+              <Route path="/profile" component={AuthHoc(Profile)} />
             </RouterCarousel>
-            {/* <RouterCarousel swipeLeft swipeRight>
+            <RouterCarousel swipeLeft swipeRight>
               <Route
                 path="/profile/:id"
                 render={(props) => <ProfilePages {...props} title={'Update Profile'} text={"GO update profile"} />}
                 defaultParams={{ id: 0 }} // important for slider
               /> 
-            </RouterCarousel> */}
+            </RouterCarousel>
             <div className="menu">
               <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>
               <NavLink to="/about" activeClassName="activeRoute">About</NavLink>

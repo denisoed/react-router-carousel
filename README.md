@@ -1,4 +1,4 @@
-# React Router Carousel(alpha@0.0.7)
+# React Router Carousel(alpha@0.0.8)
 
 [![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
 &nbsp;
