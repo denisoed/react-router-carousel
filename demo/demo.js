@@ -95,13 +95,6 @@ export default class App extends Component {
               <Route path="/contact" component={Contact} swipeleft swiperight />
               <Route path="/profile" component={AuthHoc(Profile)} />
             </RouterCarousel>
-            <RouterCarousel swipeLeft swipeRight>
-              <Route
-                path="/profile/:id"
-                render={(props) => <ProfilePages {...props} title={'Update Profile'} text={"GO update profile"} />}
-                defaultParams={{ id: 0 }} // important for slider
-              /> 
-            </RouterCarousel>
             <div className="menu">
               <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>
               <NavLink to="/about" activeClassName="activeRoute">About</NavLink>

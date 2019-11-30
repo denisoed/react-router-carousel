@@ -1,6 +1,6 @@
 {
   "name": "react-router-carousel",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "React Router Carousel",
   "author": "Denisoed",
   "license": "MIT",
@@ -62,5 +62,14 @@
     "rollup-plugin-babel": "3",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^3.1.11"
-  }
+  },
+  "keywords": [
+    "react",
+    "router",
+    "react carousel",
+    "react rouser carousel",
+    "react router slider",
+    "react router",
+    "pwa"
+  ]
 }

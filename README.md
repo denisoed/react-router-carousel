@@ -1,4 +1,6 @@
-# React Router Carousel(alpha@0.0.8)
+# React Router Carousel(alpha@0.0.9)
+
+React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe
 
 [![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
 &nbsp;
