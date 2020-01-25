@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 import { matchPath, withRouter } from "react-router";
-import { useSwipeable } from 'react-swipeable'
-import SwipeableViews from 'react-swipeable-views';
+import { useSwipeable } from "react-swipeable"
+import SwipeableViews from "react-swipeable-views";
 import generatePath from "./generatePath";
 
 const RouterCarousel = props => {
@@ -213,7 +213,7 @@ const RouterCarousel = props => {
               generatePath(path, element && element.props && element.props.defaultParams),
               element && element.props
             );
-  
+
             props.match = match;
             props.key = path;
   

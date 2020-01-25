@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import RouterCarousel from 'react-router-carousel'
-import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  NavLink,
+  Switch
+} from 'react-router-dom';
 import AuthHoc from './AuthHoc';
 
 // Components
@@ -43,14 +48,6 @@ const Profile = () => {
     </div>
   )
 };
-const NotFound = () => {
-  return (
-    <div style={{ width: '100%', height: 540 }}>
-      <h1>404 page</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-  )
-};
 const Map = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Map page</h1>
@@ -64,6 +61,14 @@ const Login = ({ match }) => (
     <p>If the user is not authorized, it will be transferred to the authorization page</p>
   </div>
 );
+const NotFound = () => {
+  return (
+    <div style={{ width: '100%', height: 540 }}>
+      <h1>404 page</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+  )
+};
 
 export default class App extends Component {
   constructor (props) {
@@ -85,25 +90,27 @@ export default class App extends Component {
             borderRadius: 10,
             border: '1px solid #222',
             padding: 20,
-            boxSizing: "border-box",
-            margin: "0 auto",
+            boxSizing: 'border-box',
+            margin: '0 auto',
             position: 'relative',
             overflow: 'hidden'
           }
         }>
           <Router>
-            <Route path="/map" component={Map} />
-            <Route path="/login" component={Login} />
-            {/* <Route path="*" component={NotFound} /> */}
-            <RouterCarousel
-              swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
-              swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-            >
-              <Route path="/" component={Home} />
-              <Route path="/about" component={About} />
-              <Route path="/contact" component={Contact} swipeleft swiperight />
-              <Route path="/profile" component={AuthHoc(Profile)} />
-            </RouterCarousel>
+            <Switch>
+              <Route path="/map" component={Map} />
+              <Route path="/login" component={Login} />
+              {/* <Route path="*" component={NotFound} /> */}
+              <RouterCarousel
+                swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
+                swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+              >
+                <Route path="/" component={Home} />
+                <Route path="/about" component={About} />
+                <Route path="/contact" component={Contact} swipeleft swiperight />
+                <Route path="/profile" component={AuthHoc(Profile)} />
+              </RouterCarousel>
+            </Switch>
             <div className="menu">
               <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>
               <NavLink to="/about" activeClassName="activeRoute">About</NavLink>

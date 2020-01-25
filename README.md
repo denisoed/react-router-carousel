@@ -1,9 +1,12 @@
-# React Router Carousel(alpha@0.0.9)
+# React Router Carousel(beta@0.1.0)
 
-React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe
+React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe on the site
 
 [![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
 &nbsp;
+
+## Problems
+* `<Route path="*" component={NotFound} />` - ignores routes in the carousel. Will always display the NotFound page
 
 ## Installation
 
@@ -12,6 +15,8 @@ npm install --save react-router-carousel
 ```
 
 ## Example
+
+![Alt Text](rrc.gif)
 
 ```js
 import React, { Component } from 'react';
