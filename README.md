@@ -5,7 +5,7 @@ React carousel with the ability to switch routes, both with the usual swipe, and
 [![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
 &nbsp;
 
-## Problems
+## Issues
 * `<Route path="*" component={NotFound} />` - ignores routes in the carousel. Will always display the NotFound page
 
 ## Installation
