@@ -24,7 +24,11 @@ const RouterCarousel = props => {
   } = props;
 
   const nullElement = <React.Fragment><div></div></React.Fragment>
-  let renderableRoutes = [nullElement, nullElement, nullElement, nullElement];
+  let renderableRoutes = [];
+
+  children.forEach(() => {
+    renderableRoutes.push(nullElement);
+  });
 
   if (!sliderMode) {
     const slide = React.Children.toArray(children).find(
@@ -102,13 +106,13 @@ const RouterCarousel = props => {
     return false;
   };
 
-  const handlerLeft = useSwipeable({
+  const handlerLeftSwipe = useSwipeable({
     onSwipedRight: () => slideLeft(swipeleft),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
   });
 
-  const handlerRight = useSwipeable({
+  const handlerRightSwipe = useSwipeable({
     onSwipedLeft: () => slideRight(swiperight),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
@@ -147,11 +151,11 @@ const RouterCarousel = props => {
   };
 
   const swipeLeftButton = (
-    <section {...handlerLeft} className={swipeLeftClassName} />
+    <section {...handlerLeftSwipe} className={swipeLeftClassName} />
   );
 
   const swipeRightButton = (
-    <section {...handlerRight} className={swipeRightClassName} />
+    <section {...handlerRightSwipe} className={swipeRightClassName} />
   );
 
   // Did mount

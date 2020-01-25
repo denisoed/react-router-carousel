@@ -43,6 +43,14 @@ const Profile = () => {
     </div>
   )
 };
+const NotFound = () => {
+  return (
+    <div style={{ width: '100%', height: 540 }}>
+      <h1>404 page</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+  )
+};
 const Map = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Map page</h1>
@@ -86,6 +94,7 @@ export default class App extends Component {
           <Router>
             <Route path="/map" component={Map} />
             <Route path="/login" component={Login} />
+            {/* <Route path="*" component={NotFound} /> */}
             <RouterCarousel
               swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
               swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
