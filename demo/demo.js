@@ -61,13 +61,29 @@ const Login = ({ match }) => (
     <p>If the user is not authorized, it will be transferred to the authorization page</p>
   </div>
 );
-const NotFound = () => {
+
+const FallbackPage = () => {
   return (
     <div style={{ width: '100%', height: 540 }}>
       <h1>404 page</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
     </div>
   )
+};
+
+const Carousel = () => {
+  return (
+    <RouterCarousel
+      swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
+      swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+      fallbackRoute={<FallbackPage />}
+    >
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} swipeleft swiperight />
+      <Route path="/profile" component={AuthHoc(Profile)} />
+    </RouterCarousel>
+  );
 };
 
 export default class App extends Component {
@@ -100,16 +116,7 @@ export default class App extends Component {
             <Switch>
               <Route path="/map" component={Map} />
               <Route path="/login" component={Login} />
-              {/* <Route path="*" component={NotFound} /> */}
-              <RouterCarousel
-                swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
-                swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-              >
-                <Route path="/" component={Home} />
-                <Route path="/about" component={About} />
-                <Route path="/contact" component={Contact} swipeleft swiperight />
-                <Route path="/profile" component={AuthHoc(Profile)} />
-              </RouterCarousel>
+              <Route path="*" component={Carousel} />
             </Switch>
             <div className="menu">
               <NavLink exact to="/" activeClassName="activeRoute">Home</NavLink>

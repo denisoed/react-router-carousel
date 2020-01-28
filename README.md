@@ -6,7 +6,7 @@ React carousel with the ability to switch routes, both with the usual swipe, and
 &nbsp;
 
 ## Issues
-* `<Route path="*" component={NotFound} />` - ignores routes in the carousel. Will always display the NotFound page
+* `<Route path="*" component={FallbackPage} />` - ignores routes in the carousel. Please add the fallbackRoute prop for RouterCarousel with the 404 page component, as in the example below
 
 ## Installation
 
@@ -15,13 +15,13 @@ npm install --save react-router-carousel
 ```
 
 ## Example
-
+`Look at the page url`<br>
 ![Alt Text](rrc.gif)
 
 ```js
 import React, { Component } from 'react';
 import RouterCarousel from 'react-router-carousel';
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink, Switch } from "react-router-dom";
 
 // Components
 const Home = () => (
@@ -72,19 +72,37 @@ const Map = () => (
   </div>
 );
 
+const FallbackPage = () => {
+  return (
+    <div style={{ width: '100%', height: 540 }}>
+      <h1>404 page</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+  )
+};
+
+const Carousel = () => {
+  return (
+    <RouterCarousel
+      swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
+      swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+      fallbackRoute={<FallbackPage />}
+    >
+      <Route path="/" component={Home} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} swipeleft swiperight />
+      <Route path="/profile" component={Profile} />
+    </RouterCarousel>
+  );
+};
+
 export default class App extends Component {
 	return (
-		<Router>
-			<Route path="/map" component={Map} />
-			<RouterCarousel
-				swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
-				swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-			>
-				<Route path="/" component={Home} />
-				<Route path="/about" component={About} />
-				<Route path="/contact" component={Contact} swipeleft swiperight />
-				<Route path="/profile" component={Profile} />
-			</RouterCarousel>
+    <Router>
+      <Switch>
+        <Route path="/map" component={Map} />
+        <Route path="*" component={Carousel} />
+      </Switch>
 			<div className="menu">
 				<NavLink exact to="/">Home</NavLink>
 				<NavLink to="/about">About</NavLink>
@@ -100,11 +118,12 @@ export default class App extends Component {
 
 ## Props for wrapp carousel
 
-|    Property    | Type |          Description          | Default |
-| -------------  | ---- |          -----------          | ------- |
-| sliderMode  | bool | Normal carousel mode. `Router will not switch` | false |
-| swipeLeftClassName  | string | Custom className for swipe left zone | null |
-| swipeRightClassName  | string | Custom className for swipe right zone | null |
+|    Property    | Type |          Description          | Default | Example | 
+| -------------  | ---- |          -----------          | ------- | ------- |
+| sliderMode  | bool | Standart carousel mode. `Router will not switch` | false |  |
+| swipeLeftClassName  | string | Custom className for swipe left zone | null |  |
+| swipeRightClassName  | string | Custom className for swipe right zone | null |  |
+| fallbackRoute | component | If the entered route is not found this is the component that will be displayed | null | `<FallbackPage />` |
 
 ## Props for slide
 

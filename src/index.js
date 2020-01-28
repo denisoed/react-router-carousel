@@ -20,6 +20,7 @@ const RouterCarousel = props => {
     sliderMode,
     swipeLeftClassName,
     swipeRightClassName,
+    fallbackRoute,
     match: routeMatch
   } = props;
 
@@ -216,7 +217,7 @@ const RouterCarousel = props => {
 
             props.match = match;
             props.key = path;
-  
+
             return component
               ? React.createElement(component, props)
               : render
@@ -225,6 +226,7 @@ const RouterCarousel = props => {
           }
         })}
       </SwipeableViews>}
+      {!routeHas && fallbackRoute || null}
       {sliderMode && <SwipeableViews
         index={slideIndex}
         onChangeIndex={handleIndexChange}
