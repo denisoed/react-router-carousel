@@ -14,6 +14,24 @@ React carousel with the ability to switch routes, both with the usual swipe, and
 npm install --save react-router-carousel
 ```
 
+## Props for wrap carousel
+
+|    Property    | Type |          Description          | Default | Example | 
+| -------------  | ---- |          -----------          | ------- | ------- |
+| sliderMode  | bool | Standart carousel mode. `Router will not switch` | false |  |
+| swipeLeftClassName  | string | Custom className for swipe left zone | null |  |
+| swipeRightClassName  | string | Custom className for swipe right zone | null |  |
+| fallbackRoute | component | If the entered route is not found this is the component that will be displayed | null | `<FallbackPage />` |
+
+## Props for slide
+
+|    Property    | Type |          Description          | Default |
+| -------------  | ---- |          -----------          | ------- |
+| index  | number | Set active slider. Work only props `sliderMode` | 1 |
+| swipeleft  | bool | Enable swipe left zone. If uses with props `sliderMode` add `true` or `false` - `swipeleft="true"` | false |
+| swiperight  | bool | Enable swipe right zone. If uses with props `sliderMode` add `true` or `false` - `swiperight="true"` | false |
+
+
 ## Example
 `Look at the page url`<br>
 ![Alt Text](rrc.gif)
@@ -206,19 +224,46 @@ export default class App extends Component {
 
 > Example can be found in the example/ folder
 
-## Props for wrapp carousel
+## Development
 
-|    Property    | Type |          Description          | Default | Example | 
-| -------------  | ---- |          -----------          | ------- | ------- |
-| sliderMode  | bool | Standart carousel mode. `Router will not switch` | false |  |
-| swipeLeftClassName  | string | Custom className for swipe left zone | null |  |
-| swipeRightClassName  | string | Custom className for swipe right zone | null |  |
-| fallbackRoute | component | If the entered route is not found this is the component that will be displayed | null | `<FallbackPage />` |
+> Boilerplate for create react plugins - https://github.com/transitive-bullshit/create-react-library
 
-## Props for slide
+Local development is broken into two parts (ideally using two tabs).
 
-|    Property    | Type |          Description          | Default |
-| -------------  | ---- |          -----------          | ------- |
-| index  | number | Set active slider. Work only props `sliderMode` | 1 |
-| swipeleft  | bool | Enable swipe left zone. If uses with props `sliderMode` add `true` or `false` - `swipeleft="true"` | false |
-| swiperight  | bool | Enable swipe right zone. If uses with props `sliderMode` add `true` or `false` - `swiperight="true"` | false |
+First, run rollup to watch your `src/` module and automatically recompile it into `dist/` whenever you make changes.
+
+```bash
+npm start # runs rollup with watch flag
+```
+
+The second part will be running the `example/` create-react-app that's linked to the local version of your module.
+
+```bash
+# (in another tab)
+cd example
+npm start # runs create-react-app dev server
+```
+
+Now, anytime you make a change to your library in `src/` or to the example app's `example/src`, `create-react-app` will live-reload your local dev server so you can iterate on your component in real-time.
+
+#### Publishing to npm
+
+```bash
+npm publish
+```
+
+This builds `commonjs` and `es` versions of your module to `dist/` and then publishes your module to `npm`.
+
+Make sure that any npm modules you want as peer dependencies are properly marked as `peerDependencies` in `package.json`. The rollup config will automatically recognize them as peers and not try to bundle them in your module.
+
+#### Deploying to Github Pages
+
+```bash
+npm run deploy
+```
+
+This creates a production build of the example `create-react-app` that showcases your library and then runs `gh-pages` to deploy the resulting bundle.
+
+## Use with React Hooks
+
+If you use [react-hooks](https://reactjs.org/docs/hooks-intro.html) in your project, when you debug your example you may run into an exception [Invalid Hook Call Warning](https://reactjs.org/warnings/invalid-hook-call-warning.html). This [issue](https://github.com/facebook/react/issues/14257) explains the reason, your lib and example use a different instance, one solution is rewrite the `react` path in your example's `package.json` to 'file:../node_modules/react' or 'link:../node_modules/react'.
