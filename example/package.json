@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "react": "link:../node_modules/react",
-    "react-dom": "link:../node_modules/react-dom",
-    "react-router-carousel": "^0.1.1",
+    "react-router-dom": "link:../node_modules/react-router-dom",
+    "react-router-carousel": "link:..",
     "react-scripts": "link:../node_modules/react-scripts"
   },
   "devDependencies": {

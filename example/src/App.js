@@ -1,12 +1,7 @@
-import React, { Component } from 'react'
-import RouterCarousel from 'react-router-carousel'
-import {
-  BrowserRouter as Router,
-  Route,
-  NavLink,
-  Switch
-} from 'react-router-dom'
-import AuthHoc from './AuthHoc'
+import React from 'react';
+import RouterCarousel from 'react-router-carousel';
+import { Route, NavLink, Switch } from 'react-router-dom';
+import AuthHoc from './AuthHoc';
 
 // Components
 const Home = () => (
@@ -19,7 +14,7 @@ const Home = () => (
       commodo consequat.
     </p>
   </div>
-)
+);
 const About = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>About page</h1>
@@ -33,7 +28,7 @@ const About = () => (
       Map
     </NavLink>
   </div>
-)
+);
 const Contact = () => (
   <div style={{ width: '100%', height: 540, position: 'relative' }}>
     <h1>Contact page</h1>
@@ -65,7 +60,7 @@ const Contact = () => (
       </RouterCarousel>
     </section>
   </div>
-)
+);
 const Profile = () => {
   return (
     <div style={{ width: '100%', height: 540 }}>
@@ -77,8 +72,8 @@ const Profile = () => {
         commodo consequat.
       </p>
     </div>
-  )
-}
+  );
+};
 const Map = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Map page</h1>
@@ -89,7 +84,7 @@ const Map = () => (
       commodo consequat.
     </p>
   </div>
-)
+);
 const Login = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Login page</h1>
@@ -99,7 +94,7 @@ const Login = () => (
       page
     </p>
   </div>
-)
+);
 
 const FallbackPage = () => {
   return (
@@ -112,8 +107,8 @@ const FallbackPage = () => {
         commodo consequat.
       </p>
     </div>
-  )
-}
+  );
+};
 
 const Carousel = () => {
   return (
@@ -127,57 +122,49 @@ const Carousel = () => {
       <Route path='/contact' component={Contact} swipeleft swiperight />
       <Route path='/profile' component={AuthHoc(Profile)} />
     </RouterCarousel>
-  )
-}
+  );
+};
 
-export default class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {}
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <h1>React Router Carousel</h1>
-        <div
-          style={{
-            textAlign: 'center',
-            width: '98%',
-            height: 540,
-            borderRadius: 10,
-            border: '1px solid #222',
-            padding: 20,
-            boxSizing: 'border-box',
-            margin: '0 auto',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-        >
-          <Router>
-            <Switch>
-              <Route path='/map' component={Map} />
-              <Route path='/login' component={Login} />
-              <Route path='*' component={Carousel} />
-            </Switch>
-            <div className='menu'>
-              <NavLink exact to='/' activeClassName='activeRoute'>
-                Home
-              </NavLink>
-              <NavLink to='/about' activeClassName='activeRoute'>
-                About
-              </NavLink>
-              <NavLink to='/contact' activeClassName='activeRoute'>
-                Contact
-              </NavLink>
-              <NavLink to='/profile' activeClassName='activeRoute'>
-                Profile
-              </NavLink>
-            </div>
-          </Router>
+const App = () => {
+  return (
+    <>
+      <h1>React Router Carousel</h1>
+      <div
+        style={{
+          textAlign: 'center',
+          width: '98%',
+          height: 540,
+          borderRadius: 10,
+          border: '1px solid #222',
+          padding: 20,
+          boxSizing: 'border-box',
+          margin: '0 auto',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        <Switch>
+          <Route path='/map' component={Map} />
+          <Route path='/login' component={Login} />
+          <Route path='*' component={Carousel} />
+        </Switch>
+        <div className='menu'>
+          <NavLink exact to='/' activeClassName='activeRoute'>
+            Home
+          </NavLink>
+          <NavLink to='/about' activeClassName='activeRoute'>
+            About
+          </NavLink>
+          <NavLink to='/contact' activeClassName='activeRoute'>
+            Contact
+          </NavLink>
+          <NavLink to='/profile' activeClassName='activeRoute'>
+            Profile
+          </NavLink>
         </div>
-      </React.Fragment>
-    )
-  }
-}
+      </div>
+    </>
+  );
+};
+
+export default App;
