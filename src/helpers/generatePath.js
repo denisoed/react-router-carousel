@@ -8,8 +8,7 @@ const compileGenerator = (pattern) => {
   const cacheKey = pattern
   const cache = patternCache[cacheKey] || (patternCache[cacheKey] = {})
 
-  if (cache[pattern])
-    return cache[pattern]
+  if (cache[pattern]) return cache[pattern]
 
   const compiledGenerator = pathToRegexp.compile(pattern)
 

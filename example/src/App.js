@@ -1,24 +1,3 @@
-# React Router Carousel(beta@0.1.1)
-
-React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe on the site
-
-[![Developed by Mad Devs](https://maddevs.io/badge-dark.svg)](https://maddevs.io)
-&nbsp;
-
-## Issues
-* `<Route path="*" component={FallbackPage} />` - ignores routes in the carousel. Please add the fallbackRoute prop for RouterCarousel with the 404 page component, as in the example below
-
-## Installation
-
-```bash
-npm install --save react-router-carousel
-```
-
-## Example
-`Look at the page url`<br>
-![Alt Text](rrc.gif)
-
-```js
 import React, { Component } from 'react'
 import RouterCarousel from 'react-router-carousel'
 import {
@@ -202,23 +181,3 @@ export default class App extends Component {
     )
   }
 }
-```
-
-> Example can be found in the example/ folder
-
-## Props for wrapp carousel
-
-|    Property    | Type |          Description          | Default | Example | 
-| -------------  | ---- |          -----------          | ------- | ------- |
-| sliderMode  | bool | Standart carousel mode. `Router will not switch` | false |  |
-| swipeLeftClassName  | string | Custom className for swipe left zone | null |  |
-| swipeRightClassName  | string | Custom className for swipe right zone | null |  |
-| fallbackRoute | component | If the entered route is not found this is the component that will be displayed | null | `<FallbackPage />` |
-
-## Props for slide
-
-|    Property    | Type |          Description          | Default |
-| -------------  | ---- |          -----------          | ------- |
-| index  | number | Set active slider. Work only props `sliderMode` | 1 |
-| swipeleft  | bool | Enable swipe left zone. If uses with props `sliderMode` add `true` or `false` - `swipeleft="true"` | false |
-| swiperight  | bool | Enable swipe right zone. If uses with props `sliderMode` add `true` or `false` - `swiperight="true"` | false |

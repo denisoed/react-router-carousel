@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react"
-import { matchPath, withRouter } from "react-router";
-import { useSwipeable } from "react-swipeable"
-import SwipeableViews from "react-swipeable-views";
-import generatePath from "./generatePath";
+import React, { useEffect, useState } from 'react'
+import { matchPath, withRouter } from 'react-router'
+import { useSwipeable } from 'react-swipeable'
+import SwipeableViews from 'react-swipeable-views'
+import generatePath from './helpers/generatePath'
 
-const RouterCarousel = props => {
-  const [urls, changeUrls] = useState([]);
-  const [slideIndex, changeSlideIndex] = useState(0);
-  const [routeHas, changeRouteHas] = useState(false);
-  const [swipeleft, toggleSwipeLeft] = useState(false);
-  const [swiperight, toggleSwipeRight] = useState(false);
-  const [swipeall, toggleSwipeAll] = useState(false);
+const RouterCarousel = (props) => {
+  const [urls, changeUrls] = useState([])
+  const [slideIndex, changeSlideIndex] = useState(0)
+  const [routeHas, changeRouteHas] = useState(false)
+  const [swipeleft, toggleSwipeLeft] = useState(false)
+  const [swiperight, toggleSwipeRight] = useState(false)
+  const [swipeall, toggleSwipeAll] = useState(false)
 
   const {
     children,
@@ -22,222 +22,269 @@ const RouterCarousel = props => {
     swipeRightClassName,
     fallbackRoute,
     match: routeMatch
-  } = props;
+  } = props
 
-  const nullElement = <React.Fragment><div></div></React.Fragment>
-  let renderableRoutes = [];
+  const nullElement = (
+    <React.Fragment>
+      <div></div>
+    </React.Fragment>
+  )
+  let renderableRoutes = []
 
   children.forEach(() => {
-    renderableRoutes.push(nullElement);
-  });
+    renderableRoutes.push(nullElement)
+  })
 
   if (!sliderMode) {
     const slide = React.Children.toArray(children).find(
-      (element) => element && element.props && element.props.path === location.pathname
-    );
-    renderableRoutes[slideIndex] = slide ? slide : nullElement;
-  };
+      (element) =>
+        element && element.props && element.props.path === location.pathname
+    )
+    renderableRoutes[slideIndex] = slide ? slide : nullElement
+  }
 
-  const triggerOnChangeIndex = location => {
-    const { children } = props;
+  const triggerOnChangeIndex = (location) => {
+    const { children } = props
     React.Children.forEach(children, (element, i) => {
-      const { path: pathProp, exact, strict, from } = element.props;
-      const path = pathProp || from;
+      const { path: pathProp, exact, strict, from } = element.props
+      const path = pathProp || from
       if (matchPath(location.pathname, { path, exact, strict })) {
-        changeUrls({ ...urls, [path]: location.pathname });
+        changeUrls({ ...urls, [path]: location.pathname })
       }
-    });
-  };
+    })
+  }
 
   const createSlideUrl = (i) => {
     const {
       props: { path, defaultParams }
-    } = React.Children.toArray(children)[i];
+    } = React.Children.toArray(children)[i]
 
-    let url;
-    if (path.includes(":")) {
+    let url
+    if (path.includes(':')) {
       if (path in urls) {
-        url = urls[path];
+        url = urls[path]
       } else {
         // Build url with defaults
-        url = generatePath(path, defaultParams);
-        changeUrls({ urls: { ...urls, [path]: url } });
+        url = generatePath(path, defaultParams)
+        changeUrls({ urls: { ...urls, [path]: url } })
       }
     } else {
-      url = path;
+      url = path
     }
-    historyGoTo(url);
-  };
+    historyGoTo(url)
+  }
 
   // Trigger the location change to the route path
   const handleIndexChange = (i) => {
     if (!sliderMode) {
-      createSlideUrl(i);    
+      createSlideUrl(i)
     }
-    changeSlideIndex(i);
-  };
+    changeSlideIndex(i)
+  }
 
-  const historyGoTo = path => {
-    const { replace, history } = props;
-    return replace ? history.replace(path) : history.push(path);
-  };
+  const historyGoTo = (path) => {
+    const { replace, history } = props
+    return replace ? history.replace(path) : history.push(path)
+  }
 
   const slideLeft = (activate) => {
     if (activate) {
-      const prevSlide = slideIndex > 0 ? slideIndex - 1 : 0;
-      changeSlideIndex(prevSlide);
+      const prevSlide = slideIndex > 0 ? slideIndex - 1 : 0
+      changeSlideIndex(prevSlide)
       if (!sliderMode) {
-        createSlideUrl(prevSlide);
+        createSlideUrl(prevSlide)
       }
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
 
   const slideRight = (activate) => {
     if (activate) {
-      const numberOfSlides = !sliderMode ? renderableRoutes.length - 1 : children.length - 1;
-      const nextSlide = slideIndex < numberOfSlides ? slideIndex + 1 : numberOfSlides;
-      changeSlideIndex(nextSlide);
+      const numberOfSlides = !sliderMode
+        ? renderableRoutes.length - 1
+        : children.length - 1
+      const nextSlide =
+        slideIndex < numberOfSlides ? slideIndex + 1 : numberOfSlides
+      changeSlideIndex(nextSlide)
       if (!sliderMode) {
-        createSlideUrl(nextSlide);
+        createSlideUrl(nextSlide)
       }
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
 
   const handlerLeftSwipe = useSwipeable({
     onSwipedRight: () => slideLeft(swipeleft),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
-  });
+  })
 
   const handlerRightSwipe = useSwipeable({
     onSwipedLeft: () => slideRight(swiperight),
     preventDefaultTouchmoveEvent: true,
     trackMouse: true
-  });
+  })
 
   const updateLocationPath = () => {
-    let match;
+    let match
     React.Children.forEach(children, (element, i) => {
-      const { path: pathProp, exact, strict, from } = element.props;
-      const path = pathProp || from;
+      const { path: pathProp, exact, strict, from } = element.props
+      const path = pathProp || from
 
-      match = matchPath(location.pathname, { path, exact, strict });
+      match = matchPath(location.pathname, { path, exact, strict })
       if (match) {
-        changeSlideIndex(i);
+        changeSlideIndex(i)
       }
-    });
-  };
+    })
+  }
 
   const checkerSwipeOnSlide = () => {
-    const mode = !sliderMode ? renderableRoutes : children;
-    if (mode && mode[slideIndex] && mode[slideIndex].props && mode[slideIndex].props.swipeleft) {
-      toggleSwipeLeft(true);
+    const mode = !sliderMode ? renderableRoutes : children
+    if (
+      mode &&
+      mode[slideIndex] &&
+      mode[slideIndex].props &&
+      mode[slideIndex].props.swipeleft
+    ) {
+      toggleSwipeLeft(true)
     } else {
-      toggleSwipeLeft(false);
+      toggleSwipeLeft(false)
     }
-    if (mode && mode[slideIndex] && mode[slideIndex].props && mode[slideIndex].props.swiperight) {
-      toggleSwipeRight(true);
+    if (
+      mode &&
+      mode[slideIndex] &&
+      mode[slideIndex].props &&
+      mode[slideIndex].props.swiperight
+    ) {
+      toggleSwipeRight(true)
     } else {
-      toggleSwipeRight(false);
+      toggleSwipeRight(false)
     }
-    if (mode && mode[slideIndex] && mode[slideIndex].props && mode[slideIndex].props.swiperight || mode && mode[slideIndex] && mode[slideIndex].props && mode[slideIndex].props.swipeleft) {
-      toggleSwipeAll(true);
+    if (
+      (mode &&
+        mode[slideIndex] &&
+        mode[slideIndex].props &&
+        mode[slideIndex].props.swiperight) ||
+      (mode &&
+        mode[slideIndex] &&
+        mode[slideIndex].props &&
+        mode[slideIndex].props.swipeleft)
+    ) {
+      toggleSwipeAll(true)
     } else {
-      toggleSwipeAll(false);
+      toggleSwipeAll(false)
     }
-  };
+  }
 
   const swipeLeftButton = (
     <section {...handlerLeftSwipe} className={swipeLeftClassName} />
-  );
+  )
 
   const swipeRightButton = (
     <section {...handlerRightSwipe} className={swipeRightClassName} />
-  );
+  )
 
   // Did mount
   useEffect(() => {
     if (!sliderMode) {
-      const { history } = props;
-      triggerOnChangeIndex(history.location);
-      updateLocationPath();
+      const { history } = props
+      triggerOnChangeIndex(history.location)
+      updateLocationPath()
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (!sliderMode) {
-      updateLocationPath();
-      changeRouteHas(renderableRoutes.some(route => {
-        if (route && route.props && route.props.path && route.props.path.includes(":")) {
-          const paramKey = Object.keys(route.props.defaultParams)[0];
-          return route.props.path.replace(":" + paramKey, route.props.defaultParams[paramKey]) === location.pathname;
-        }
-        return route && route.props && route.props.path === location.pathname;
-      }));
+      updateLocationPath()
+      changeRouteHas(
+        renderableRoutes.some((route) => {
+          if (
+            route &&
+            route.props &&
+            route.props.path &&
+            route.props.path.includes(':')
+          ) {
+            const paramKey = Object.keys(route.props.defaultParams)[0]
+            return (
+              route.props.path.replace(
+                ':' + paramKey,
+                route.props.defaultParams[paramKey]
+              ) === location.pathname
+            )
+          }
+          return route && route.props && route.props.path === location.pathname
+        })
+      )
     }
-  }, [location.pathname]);
+  }, [location.pathname])
 
   useEffect(() => {
     if (index && sliderMode) {
-      const mode = !sliderMode ? renderableRoutes : children;
-      const max = index >= mode.length ? mode.length : index;
-      const result = max >= 1 ? max - 1 : 1;
-      changeSlideIndex(result);
+      const mode = !sliderMode ? renderableRoutes : children
+      const max = index >= mode.length ? mode.length : index
+      const result = max >= 1 ? max - 1 : 1
+      changeSlideIndex(result)
     }
-  }, [index]);
+  }, [index])
 
   // Did update
   useEffect(() => {
-    checkerSwipeOnSlide();
-  });
+    checkerSwipeOnSlide()
+  })
 
   return (
     <React.Fragment>
       {sliderMode && swipeleft && swipeLeftButton}
       {swipeleft && routeHas && swipeLeftButton}
-      {!sliderMode && routeHas && <SwipeableViews
-        index={slideIndex}
-        onChangeIndex={handleIndexChange}
-        disabled={swipeall}
-      >
-        {renderableRoutes.map((element) => {
-          if (element && element.props) {
-            const { path, component, render, children } = element && element.props;
-            const props = { location, history };
-  
-            let match = matchPath(location.pathname, element && element.props);
-            match = matchPath(
-              generatePath(path, element && element.props && element.props.defaultParams),
-              element && element.props
-            );
+      {!sliderMode && routeHas && (
+        <SwipeableViews
+          index={slideIndex}
+          onChangeIndex={handleIndexChange}
+          disabled={swipeall}
+        >
+          {renderableRoutes.map((element) => {
+            if (element && element.props) {
+              const { path, component, render, children } =
+                element && element.props
+              const props = { location, history }
 
-            props.match = match;
-            props.key = path;
+              let match = matchPath(location.pathname, element && element.props)
+              match = matchPath(
+                generatePath(
+                  path,
+                  element && element.props && element.props.defaultParams
+                ),
+                element && element.props
+              )
 
-            return component
-              ? React.createElement(component, props)
-              : render
-              ? render(props)
-              : children;
-          }
-        })}
-      </SwipeableViews>}
-      {!routeHas && fallbackRoute || null}
-      {sliderMode && <SwipeableViews
-        index={slideIndex}
-        onChangeIndex={handleIndexChange}
-        disabled={swipeall}
-      >
-        {children}
-      </SwipeableViews>}
+              props.match = match
+              props.key = path
+
+              return component
+                ? React.createElement(component, props)
+                : render
+                ? render(props)
+                : children
+            }
+          })}
+        </SwipeableViews>
+      )}
+      {(!routeHas && fallbackRoute) || null}
+      {sliderMode && (
+        <SwipeableViews
+          index={slideIndex}
+          onChangeIndex={handleIndexChange}
+          disabled={swipeall}
+        >
+          {children}
+        </SwipeableViews>
+      )}
       {swiperight && routeHas && swipeRightButton}
       {sliderMode && swiperight && swipeRightButton}
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default withRouter(RouterCarousel);
+export default withRouter(RouterCarousel)
