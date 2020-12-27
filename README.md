@@ -217,7 +217,7 @@ const App = () => {
 };
 ```
 
-> Example can be found in the `example/` folder
+> Example can be found in the [example/](./example/src/App.js) folder
 
 ## Development
 
