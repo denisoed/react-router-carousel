@@ -29,7 +29,7 @@ const About = () => (
     </NavLink>
   </div>
 );
-const Contact = () => (
+const Contact = ({ history, location }) => (
   <div style={{ width: '100%', height: 540, position: 'relative' }}>
     <h1>Contact page</h1>
     <p>
@@ -48,9 +48,11 @@ const Contact = () => (
     >
       <RouterCarousel
         sliderMode
-        index='1'
+        index="1"
         swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
         swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+        history={history}
+        location={location}
       >
         <h2 swipeleft='false' swiperight='true'>
           EMail
@@ -110,14 +112,16 @@ const FallbackPage = () => {
   );
 };
 
-const Carousel = () => {
+const Carousel = ({ history, location }) => {
   return (
     <RouterCarousel
       swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
       swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
       fallbackRoute={<FallbackPage />}
+      history={history}
+      location={location}
     >
-      <Route path='/' component={Home} />
+      <Route exact path='/' component={Home} />
       <Route path='/about' component={About} />
       <Route path='/contact' component={Contact} swipeleft swiperight />
       <Route path='/profile' component={AuthHoc(Profile)} />

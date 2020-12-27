@@ -1,4 +1,4 @@
-# React Router Carousel(beta@0.1.1)
+# React Router Carousel(beta@0.1.2)
 
 React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe on the site
 
@@ -7,6 +7,7 @@ React carousel with the ability to switch routes, both with the usual swipe, and
 
 ## Issues
 * `<Route path="*" component={FallbackPage} />` - ignores routes in the carousel. Please add the fallbackRoute prop for RouterCarousel with the 404 page component, as in the example below
+* It is mandatory to pass `history` & `location` to props.
 
 ## Installation
 
@@ -16,8 +17,10 @@ npm install --save react-router-carousel
 
 ## Props for wrap carousel
 
-|    Property    | Type |          Description          | Default | Example | 
-| -------------  | ---- |          -----------          | ------- | ------- |
+|    Property   | Type | Description | Default | Example | 
+| ------------- | ---- | ----------- | ------- | ------- |
+| history | object | BrowserRouter history | undefined | |
+| location | object | BrowserRouter location | undefined | |
 | sliderMode  | bool | Standart carousel mode. `Router will not switch` | false |  |
 | swipeLeftClassName  | string | Custom className for swipe left zone | null |  |
 | swipeRightClassName  | string | Custom className for swipe right zone | null |  |
@@ -25,8 +28,8 @@ npm install --save react-router-carousel
 
 ## Props for slide
 
-|    Property    | Type |          Description          | Default |
-| -------------  | ---- |          -----------          | ------- |
+|    Property   | Type | Description | Default |
+| ------------- | ---- | ----------- | ------- |
 | index  | number | Set active slider. Work only props `sliderMode` | 1 |
 | swipeleft  | bool | Enable swipe left zone. If uses with props `sliderMode` add `true` or `false` - `swipeleft="true"` | false |
 | swiperight  | bool | Enable swipe right zone. If uses with props `sliderMode` add `true` or `false` - `swiperight="true"` | false |
@@ -37,15 +40,14 @@ npm install --save react-router-carousel
 ![Alt Text](rrc.gif)
 
 ```js
-import React, { Component } from 'react'
-import RouterCarousel from 'react-router-carousel'
+import React, { Component } from 'react';
+import RouterCarousel from 'react-router-carousel';
 import {
-  BrowserRouter as Router,
   Route,
   NavLink,
   Switch
-} from 'react-router-dom'
-import AuthHoc from './AuthHoc'
+} from 'react-router-dom';
+import AuthHoc from './AuthHoc';
 
 // Components
 const Home = () => (
@@ -58,7 +60,8 @@ const Home = () => (
       commodo consequat.
     </p>
   </div>
-)
+);
+
 const About = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>About page</h1>
@@ -72,8 +75,9 @@ const About = () => (
       Map
     </NavLink>
   </div>
-)
-const Contact = () => (
+);
+
+const Contact = ({ history, location }) => (
   <div style={{ width: '100%', height: 540, position: 'relative' }}>
     <h1>Contact page</h1>
     <p>
@@ -92,9 +96,11 @@ const Contact = () => (
     >
       <RouterCarousel
         sliderMode
-        index='1'
+        index="1"
         swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
         swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+        history={history}
+        location={location}
       >
         <h2 swipeleft='false' swiperight='true'>
           EMail
@@ -104,20 +110,20 @@ const Contact = () => (
       </RouterCarousel>
     </section>
   </div>
-)
-const Profile = () => {
-  return (
-    <div style={{ width: '100%', height: 540 }}>
-      <h1>Profile page</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </p>
-    </div>
-  )
-}
+);
+
+const Profile = () => (
+  <div style={{ width: '100%', height: 540 }}>
+    <h1>Profile page</h1>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
+    </p>
+  </div>
+);
+
 const Map = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Map page</h1>
@@ -128,7 +134,8 @@ const Map = () => (
       commodo consequat.
     </p>
   </div>
-)
+);
+
 const Login = () => (
   <div style={{ width: '100%', height: 540 }}>
     <h1>Login page</h1>
@@ -138,91 +145,79 @@ const Login = () => (
       page
     </p>
   </div>
-)
+);
 
-const FallbackPage = () => {
+const FallbackPage = () => (
+  <div style={{ width: '100%', height: 540 }}>
+    <h1>404 page</h1>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+      commodo consequat.
+    </p>
+  </div>
+);
+
+const Carousel = ({ history, location }) => (
+  <RouterCarousel
+    swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
+    swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
+    fallbackRoute={<FallbackPage />}
+    history={history}
+    location={location}
+  >
+    <Route exact path='/' component={Home} />
+    <Route path='/about' component={About} />
+    <Route path='/contact' component={Contact} swipeleft swiperight />
+    <Route path='/profile' component={AuthHoc(Profile)} />
+  </RouterCarousel>
+);
+
+const App = () => {
   return (
-    <div style={{ width: '100%', height: 540 }}>
-      <h1>404 page</h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </p>
-    </div>
-  )
-}
-
-const Carousel = () => {
-  return (
-    <RouterCarousel
-      swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
-      swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-      fallbackRoute={<FallbackPage />}
-    >
-      <Route path='/' component={Home} />
-      <Route path='/about' component={About} />
-      <Route path='/contact' component={Contact} swipeleft swiperight />
-      <Route path='/profile' component={AuthHoc(Profile)} />
-    </RouterCarousel>
-  )
-}
-
-export default class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {}
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <h1>React Router Carousel</h1>
-        <div
-          style={{
-            textAlign: 'center',
-            width: '98%',
-            height: 540,
-            borderRadius: 10,
-            border: '1px solid #222',
-            padding: 20,
-            boxSizing: 'border-box',
-            margin: '0 auto',
-            position: 'relative',
-            overflow: 'hidden'
-          }}
-        >
-          <Router>
-            <Switch>
-              <Route path='/map' component={Map} />
-              <Route path='/login' component={Login} />
-              <Route path='*' component={Carousel} />
-            </Switch>
-            <div className='menu'>
-              <NavLink exact to='/' activeClassName='activeRoute'>
-                Home
-              </NavLink>
-              <NavLink to='/about' activeClassName='activeRoute'>
-                About
-              </NavLink>
-              <NavLink to='/contact' activeClassName='activeRoute'>
-                Contact
-              </NavLink>
-              <NavLink to='/profile' activeClassName='activeRoute'>
-                Profile
-              </NavLink>
-            </div>
-          </Router>
+    <>
+      <h1>React Router Carousel</h1>
+      <div
+        style={{
+          textAlign: 'center',
+          width: '98%',
+          height: 540,
+          borderRadius: 10,
+          border: '1px solid #222',
+          padding: 20,
+          boxSizing: 'border-box',
+          margin: '0 auto',
+          position: 'relative',
+          overflow: 'hidden'
+        }}
+      >
+        <Switch>
+          <Route path='/map' component={Map} />
+          <Route path='/login' component={Login} />
+          <Route path='*' component={Carousel} />
+        </Switch>
+        <div className='menu'>
+          <NavLink exact to='/' activeClassName='activeRoute'>
+            Home
+          </NavLink>
+          <NavLink to='/about' activeClassName='activeRoute'>
+            About
+          </NavLink>
+          <NavLink to='/contact' activeClassName='activeRoute'>
+            Contact
+          </NavLink>
+          <NavLink to='/profile' activeClassName='activeRoute'>
+            Profile
+          </NavLink>
         </div>
-      </React.Fragment>
-    )
-  }
-}
+      </div>
+    </>
+  );
+};
 ```
 
-> Example can be found in the example/ folder
+> Example can be found in the `example/` folder
 
 ## Development
 

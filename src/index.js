@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { matchPath, withRouter } from 'react-router';
+import { matchPath } from 'react-router';
 import { useSwipeable } from 'react-swipeable';
 import SwipeableViews from 'react-swipeable-views';
 import generatePath from './helpers/generatePath';
@@ -20,16 +20,15 @@ const RouterCarousel = (props) => {
     sliderMode,
     swipeLeftClassName,
     swipeRightClassName,
-    fallbackRoute,
-    match: routeMatch
+    fallbackRoute
   } = props;
 
   const nullElement = (
     <React.Fragment>
-      <div></div>
+      <div />
     </React.Fragment>
   );
-  let renderableRoutes = [];
+  const renderableRoutes = [];
 
   children.forEach(() => {
     renderableRoutes.push(nullElement);
@@ -40,7 +39,7 @@ const RouterCarousel = (props) => {
       (element) =>
         element && element.props && element.props.path === location.pathname
     );
-    renderableRoutes[slideIndex] = slide ? slide : nullElement;
+    renderableRoutes[slideIndex] = slide || nullElement;
   }
 
   const triggerOnChangeIndex = (location) => {
@@ -246,8 +245,7 @@ const RouterCarousel = (props) => {
         >
           {renderableRoutes.map((element) => {
             if (element && element.props) {
-              const { path, component, render, children } =
-                element && element.props;
+              const { path, component, render, children } = element.props;
               const props = { location, history };
 
               let match = matchPath(
@@ -290,4 +288,4 @@ const RouterCarousel = (props) => {
   );
 };
 
-export default withRouter(RouterCarousel);
+export default RouterCarousel;
