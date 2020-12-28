@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 export default function Hoc(HocComponent) {
   return class extends PureComponent {

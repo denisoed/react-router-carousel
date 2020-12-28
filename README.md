@@ -7,7 +7,6 @@ React carousel with the ability to switch routes, both with the usual swipe, and
 
 ## Issues
 * `<Route path="*" component={FallbackPage} />` - ignores routes in the carousel. Please add the fallbackRoute prop for RouterCarousel with the 404 page component, as in the example below
-* It is mandatory to pass `history` & `location` to props.
 
 ## Installation
 
@@ -46,6 +45,7 @@ npm install --save react-router-carousel
 import React, { Component } from 'react';
 import RouterCarousel from 'react-router-carousel';
 import {
+  BrowserRouter,
   Route,
   NavLink,
   Switch
@@ -80,7 +80,7 @@ const About = () => (
   </div>
 );
 
-const Contact = ({ history, location }) => (
+const Contact = () => (
   <div style={{ width: '100%', height: 540, position: 'relative' }}>
     <h1>Contact page</h1>
     <p>
@@ -102,8 +102,6 @@ const Contact = ({ history, location }) => (
         index="1"
         swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
         swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-        history={history}
-        location={location}
       >
         <h2 swipeleft='false' swiperight='true'>
           EMail
@@ -162,13 +160,11 @@ const FallbackPage = () => (
   </div>
 );
 
-const Carousel = ({ history, location }) => (
+const Carousel = () => (
   <RouterCarousel
     swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
     swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
     fallbackRoute={<FallbackPage />}
-    history={history}
-    location={location}
   >
     <Route exact path='/' component={Home} />
     <Route path='/about' component={About} />
@@ -179,7 +175,7 @@ const Carousel = ({ history, location }) => (
 
 const App = () => {
   return (
-    <>
+    <BrowserRouter>
       <h1>React Router Carousel</h1>
       <div
         style={{
@@ -215,7 +211,7 @@ const App = () => {
           </NavLink>
         </div>
       </div>
-    </>
+    </BrowserRouter>
   );
 };
 ```
