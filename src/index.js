@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { matchPath } from 'react-router';
+import { matchPath, withRouter } from 'react-router';
 import { useSwipeable } from 'react-swipeable';
 import SwipeableViews from 'react-swipeable-views';
 import generatePath from './helpers/generatePath';
@@ -288,4 +288,4 @@ const RouterCarousel = (props) => {
   );
 };
 
-export default RouterCarousel;
+export default withRouter(RouterCarousel);

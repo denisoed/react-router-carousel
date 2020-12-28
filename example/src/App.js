@@ -1,6 +1,11 @@
 import React from 'react';
 import RouterCarousel from 'react-router-carousel';
-import { Route, NavLink, Switch } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Route,
+  NavLink,
+  Switch
+} from 'react-router-dom';
 import AuthHoc from './AuthHoc';
 
 // Components
@@ -29,7 +34,7 @@ const About = () => (
     </NavLink>
   </div>
 );
-const Contact = ({ history, location }) => (
+const Contact = () => (
   <div style={{ width: '100%', height: 440, position: 'relative' }}>
     <h1>Contact page</h1>
     <p>
@@ -51,8 +56,6 @@ const Contact = ({ history, location }) => (
         index="1"
         swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
         swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
-        history={history}
-        location={location}
       >
         <h2 swipeleft='false' swiperight='true'>
           EMail
@@ -112,14 +115,12 @@ const FallbackPage = () => {
   );
 };
 
-const Carousel = ({ history, location }) => {
+const Carousel = () => {
   return (
     <RouterCarousel
       swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
       swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
       fallbackRoute={<FallbackPage />}
-      history={history}
-      location={location}
     >
       <Route exact path='/' component={Home} />
       <Route path='/about' component={About} />
@@ -131,7 +132,7 @@ const Carousel = ({ history, location }) => {
 
 const App = () => {
   return (
-    <>
+    <BrowserRouter>
       <h1>
         React Router Carousel
       </h1>
@@ -178,7 +179,7 @@ const App = () => {
       }}>
         Please open the example on a mobile device or emulator in your browser(f12)
       </p>
-    </>
+    </BrowserRouter>
   );
 };
 
