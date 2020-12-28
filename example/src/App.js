@@ -5,7 +5,7 @@ import AuthHoc from './AuthHoc';
 
 // Components
 const Home = () => (
-  <div style={{ width: '100%', height: 540 }}>
+  <div style={{ width: '100%', height: 440 }}>
     <h1>Home page</h1>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -16,7 +16,7 @@ const Home = () => (
   </div>
 );
 const About = () => (
-  <div style={{ width: '100%', height: 540 }}>
+  <div style={{ width: '100%', height: 440 }}>
     <h1>About page</h1>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -30,7 +30,7 @@ const About = () => (
   </div>
 );
 const Contact = ({ history, location }) => (
-  <div style={{ width: '100%', height: 540, position: 'relative' }}>
+  <div style={{ width: '100%', height: 440, position: 'relative' }}>
     <h1>Contact page</h1>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -65,7 +65,7 @@ const Contact = ({ history, location }) => (
 );
 const Profile = () => {
   return (
-    <div style={{ width: '100%', height: 540 }}>
+    <div style={{ width: '100%', height: 440 }}>
       <h1>Profile page</h1>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -77,7 +77,7 @@ const Profile = () => {
   );
 };
 const Map = () => (
-  <div style={{ width: '100%', height: 540 }}>
+  <div style={{ width: '100%', height: 440 }}>
     <h1>Map page</h1>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -88,7 +88,7 @@ const Map = () => (
   </div>
 );
 const Login = () => (
-  <div style={{ width: '100%', height: 540 }}>
+  <div style={{ width: '100%', height: 440 }}>
     <h1>Login page</h1>
     <h3>React Hoc is works!</h3>
     <p>
@@ -100,7 +100,7 @@ const Login = () => (
 
 const FallbackPage = () => {
   return (
-    <div style={{ width: '100%', height: 540 }}>
+    <div style={{ width: '100%', height: 440 }}>
       <h1>404 page</h1>
       <p>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -132,12 +132,14 @@ const Carousel = ({ history, location }) => {
 const App = () => {
   return (
     <>
-      <h1>React Router Carousel</h1>
+      <h1>
+        React Router Carousel
+      </h1>
       <div
         style={{
           textAlign: 'center',
           width: '98%',
-          height: 540,
+          height: 440,
           borderRadius: 10,
           border: '1px solid #222',
           padding: 20,
@@ -167,6 +169,15 @@ const App = () => {
           </NavLink>
         </div>
       </div>
+      <p style={{
+        width: '100%',
+        padding: 10,
+        boxSizing: 'border-box',
+        textAlign: 'center',
+        margin: 0
+      }}>
+        Please open the example on a mobile device or emulator in your browser(f12)
+      </p>
     </>
   );
 };

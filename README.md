@@ -36,6 +36,9 @@ npm install --save react-router-carousel
 
 
 ## Example
+
+**Demo** - [https://denisoed.github.io/react-router-carousel](https://denisoed.github.io/react-router-carousel)
+
 `Look at the page url`<br>
 ![Alt Text](rrc.gif)
 
