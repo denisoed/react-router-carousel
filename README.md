@@ -1,4 +1,4 @@
-# React Router Carousel(beta@0.1.2)
+# React Router Carousel(beta@0.1.4)
 
 React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe on the site
 
@@ -36,7 +36,7 @@ npm install --save react-router-carousel
 
 ## Example
 
-**Demo** - [https://denisoed.github.io/react-router-carousel](https://denisoed.github.io/react-router-carousel)
+**Demo** - [https://upbeat-bell-fce131.netlify.app](https://upbeat-bell-fce131.netlify.app)
 
 `Look at the page url`<br>
 ![Alt Text](rrc.gif)
