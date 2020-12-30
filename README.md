@@ -1,4 +1,4 @@
-# React Router Carousel(beta@0.1.4)
+# React Router Carousel(beta@0.1.5)
 
 React carousel with the ability to switch routes, both with the usual swipe, and with the ability to add zones for swipe on the site
 

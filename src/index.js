@@ -52,15 +52,9 @@ const RouterCarousel = (props) => {
         const { path, component, render, children } = element.props;
         const props = { location, history };
 
-        let match = matchPath(
-          location.pathname,
-          element?.props
-        );
+        let match = matchPath(location.pathname, element?.props);
         match = matchPath(
-          generatePath(
-            path,
-            element?.props?.defaultParams
-          ),
+          generatePath(path, element?.props?.defaultParams),
           element?.props
         );
 
@@ -73,7 +67,7 @@ const RouterCarousel = (props) => {
           ? render(props)
           : children;
       }
-    })
+    });
   };
 
   const triggerOnChangeIndex = () => {
@@ -183,8 +177,9 @@ const RouterCarousel = (props) => {
     } else {
       toggleSwipeRight(false);
     }
-    if (mode[slideIndex]?.props?.swiperight ||
-        mode[slideIndex]?.props?.swipeleft
+    if (
+      mode[slideIndex]?.props?.swiperight ||
+      mode[slideIndex]?.props?.swipeleft
     ) {
       toggleSwipeAll(true);
     } else {
