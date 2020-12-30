@@ -1,11 +1,6 @@
 import React from 'react';
 import RouterCarousel from 'react-router-carousel';
-import {
-  BrowserRouter,
-  Route,
-  NavLink,
-  Switch
-} from 'react-router-dom';
+import { BrowserRouter, Route, NavLink, Switch } from 'react-router-dom';
 import AuthHoc from './AuthHoc';
 
 // Components
@@ -53,7 +48,7 @@ const Contact = () => (
     >
       <RouterCarousel
         sliderMode
-        index="1"
+        index='1'
         swipeLeftClassName={'router-carousel-zone router-carousel-zone--left'}
         swipeRightClassName={'router-carousel-zone router-carousel-zone--right'}
       >
@@ -133,9 +128,7 @@ const Carousel = () => {
 const App = () => {
   return (
     <BrowserRouter>
-      <h1>
-        React Router Carousel
-      </h1>
+      <h1>React Router Carousel</h1>
       <div
         style={{
           textAlign: 'center',
@@ -170,14 +163,17 @@ const App = () => {
           </NavLink>
         </div>
       </div>
-      <p style={{
-        width: '100%',
-        padding: 10,
-        boxSizing: 'border-box',
-        textAlign: 'center',
-        margin: 0
-      }}>
-        Please open the example on a mobile device or emulator in your browser(f12)
+      <p
+        style={{
+          width: '100%',
+          padding: 10,
+          boxSizing: 'border-box',
+          textAlign: 'center',
+          margin: 0
+        }}
+      >
+        Please open the example on a mobile device or emulator in your
+        browser(f12)
       </p>
     </BrowserRouter>
   );
