@@ -127,7 +127,7 @@ const Carousel = () => {
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <h1>React Router Carousel</h1>
       <div
         style={{
