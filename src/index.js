@@ -17,6 +17,7 @@ const RouterCarousel = (props) => {
     index,
     location,
     history,
+    replace,
     sliderMode,
     swipeLeftClassName,
     swipeRightClassName,
@@ -30,25 +31,57 @@ const RouterCarousel = (props) => {
   );
   const renderableRoutes = [];
 
-  children.forEach(() => {
+  if (children?.length) {
+    children.forEach(() => {
+      renderableRoutes.push(nullElement);
+    });
+  } else {
     renderableRoutes.push(nullElement);
-  });
+  }
 
   if (!sliderMode) {
     const slide = React.Children.toArray(children).find(
-      (element) =>
-        element && element.props && element.props.path === location.pathname
+      (element) => element?.props?.path === location.pathname
     );
     renderableRoutes[slideIndex] = slide || nullElement;
   }
 
-  const triggerOnChangeIndex = (location) => {
-    const { children } = props;
+  const renderSlides = () => {
+    return renderableRoutes.map((element) => {
+      if (element?.props) {
+        const { path, component, render, children } = element.props;
+        const props = { location, history };
+
+        let match = matchPath(
+          location.pathname,
+          element?.props
+        );
+        match = matchPath(
+          generatePath(
+            path,
+            element?.props?.defaultParams
+          ),
+          element?.props
+        );
+
+        props.match = match;
+        props.key = path;
+
+        return component
+          ? React.createElement(component, props)
+          : render
+          ? render(props)
+          : children;
+      }
+    })
+  };
+
+  const triggerOnChangeIndex = () => {
     React.Children.forEach(children, (element, i) => {
       const { path: pathProp, exact, strict, from } = element.props;
       const path = pathProp || from;
-      if (matchPath(location.pathname, { path, exact, strict })) {
-        changeUrls({ ...urls, [path]: location.pathname });
+      if (matchPath(history.location.pathname, { path, exact, strict })) {
+        changeUrls({ ...urls, [path]: history.location.pathname });
       }
     });
   };
@@ -82,7 +115,6 @@ const RouterCarousel = (props) => {
   };
 
   const historyGoTo = (path) => {
-    const { replace, history } = props;
     return replace ? history.replace(path) : history.push(path);
   };
 
@@ -141,35 +173,18 @@ const RouterCarousel = (props) => {
 
   const checkerSwipeOnSlide = () => {
     const mode = !sliderMode ? renderableRoutes : children;
-    if (
-      mode &&
-      mode[slideIndex] &&
-      mode[slideIndex].props &&
-      mode[slideIndex].props.swipeleft
-    ) {
+    if (mode[slideIndex]?.props?.swipeleft) {
       toggleSwipeLeft(true);
     } else {
       toggleSwipeLeft(false);
     }
-    if (
-      mode &&
-      mode[slideIndex] &&
-      mode[slideIndex].props &&
-      mode[slideIndex].props.swiperight
-    ) {
+    if (mode[slideIndex]?.props?.swiperight) {
       toggleSwipeRight(true);
     } else {
       toggleSwipeRight(false);
     }
-    if (
-      (mode &&
-        mode[slideIndex] &&
-        mode[slideIndex].props &&
-        mode[slideIndex].props.swiperight) ||
-      (mode &&
-        mode[slideIndex] &&
-        mode[slideIndex].props &&
-        mode[slideIndex].props.swipeleft)
+    if (mode[slideIndex]?.props?.swiperight ||
+        mode[slideIndex]?.props?.swipeleft
     ) {
       toggleSwipeAll(true);
     } else {
@@ -188,8 +203,7 @@ const RouterCarousel = (props) => {
   // Did mount
   useEffect(() => {
     if (!sliderMode) {
-      const { history } = props;
-      triggerOnChangeIndex(history.location);
+      triggerOnChangeIndex();
       updateLocationPath();
     }
   }, []);
@@ -199,12 +213,7 @@ const RouterCarousel = (props) => {
       updateLocationPath();
       changeRouteHas(
         renderableRoutes.some((route) => {
-          if (
-            route &&
-            route.props &&
-            route.props.path &&
-            route.props.path.includes(':')
-          ) {
+          if (route?.props?.path?.includes(':')) {
             const paramKey = Object.keys(route.props.defaultParams)[0];
             return (
               route.props.path.replace(
@@ -213,7 +222,7 @@ const RouterCarousel = (props) => {
               ) === location.pathname
             );
           }
-          return route && route.props && route.props.path === location.pathname;
+          return route?.props?.path === location.pathname;
         })
       );
     }
@@ -222,7 +231,7 @@ const RouterCarousel = (props) => {
   useEffect(() => {
     if (index && sliderMode) {
       const mode = !sliderMode ? renderableRoutes : children;
-      const max = index >= mode.length ? mode.length : index;
+      const max = index >= mode?.length || index;
       const result = max >= 1 ? max - 1 : 1;
       changeSlideIndex(result);
     }
@@ -243,33 +252,7 @@ const RouterCarousel = (props) => {
           onChangeIndex={handleIndexChange}
           disabled={swipeall}
         >
-          {renderableRoutes.map((element) => {
-            if (element && element.props) {
-              const { path, component, render, children } = element.props;
-              const props = { location, history };
-
-              let match = matchPath(
-                location.pathname,
-                element && element.props
-              );
-              match = matchPath(
-                generatePath(
-                  path,
-                  element && element.props && element.props.defaultParams
-                ),
-                element && element.props
-              );
-
-              props.match = match;
-              props.key = path;
-
-              return component
-                ? React.createElement(component, props)
-                : render
-                ? render(props)
-                : children;
-            }
-          })}
+          {renderSlides()}
         </SwipeableViews>
       )}
       {(!routeHas && fallbackRoute) || null}
