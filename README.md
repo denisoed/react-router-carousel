@@ -18,8 +18,6 @@ npm install --save react-router-carousel
 
 |    Property   | Type | Description | Default | Example | 
 | ------------- | ---- | ----------- | ------- | ------- |
-| history | object | BrowserRouter history | undefined | |
-| location | object | BrowserRouter location | undefined | |
 | sliderMode  | bool | Standart carousel mode. `Router will not switch` | false |  |
 | swipeLeftClassName  | string | Custom className for swipe left zone | null |  |
 | swipeRightClassName  | string | Custom className for swipe right zone | null |  |
@@ -179,16 +177,16 @@ const App = () => {
       <h1>React Router Carousel</h1>
       <div
         style={{
-          textAlign: 'center',
           width: '98%',
           height: 540,
-          borderRadius: 10,
-          border: '1px solid #222',
+          position: 'relative',
+          margin: '0 auto',
           padding: 20,
           boxSizing: 'border-box',
-          margin: '0 auto',
-          position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          borderRadius: 10,
+          border: '1px solid #222',
+          textAlign: 'center'
         }}
       >
         <Switch>
